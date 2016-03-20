@@ -75,12 +75,12 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 * __multipleLinksOnOutput (default: false):__ Allows multiple links on the same output connector.
 
 * __onOperatorSelect (default: function returning true):__ Callback method. Called when an operator is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __operatorId __ ID of the operator.
+  * __operatorId__ ID of the operator.
 
 * __onOperatorUnselect (default: function returning true):__ Callback method. Called when an operator is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
 * __onLinkSelect (default: function returning true):__ Callback method. Called when a link is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __linkId __ ID of the link.
+  * __linkId__ ID of the link.
 
 * __onLinkUnselect (default: function returning true):__ Callback method. Called when a link is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
@@ -90,7 +90,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __fullElement:__ Hash containing DOM elements of the operator. The structure is the same as what is returned by the `getOperatorElement` function.
 
 * __onOperatorDelete (default: function returning true):__ Callback method. Called when an operator is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
-  * __operatorId __ ID of the operator.
+  * __operatorId__ ID of the operator.
 
 * __onLinkCreate (default: function returning true):__ Callback method. Called when a link is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
   * __linkId:__ ID of the link.

@@ -127,6 +127,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: move;
 }
 
 .flowchart-operator .flowchart-operator-inputs-outputs {
@@ -140,5 +141,3 @@
     display: table-cell;
     width: 50%;
 }
-
-

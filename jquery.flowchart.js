@@ -210,9 +210,9 @@ $(function() {
             this.objs.layers.operators.empty();
         },
         
-        getConnectorPosition: function(operator, connector) {
-            var operatorData = this.data.operators[operator];
-            var $connector = operatorData.internal.els.connectorArrows[connector];
+        getConnectorPosition: function(operatorId, connectorId) {
+            var operatorData = this.data.operators[operatorId];
+            var $connector = operatorData.internal.els.connectorArrows[connectorId];
             
             var connectorOffset = $connector.offset();
             var elementOffset = this.element.offset();
@@ -342,7 +342,7 @@ $(function() {
             linkData.internal.els.rect.setAttribute("height", this.options.linkWidth);
         },
         
-        getOperatorFullInfos: function(operatorData) {
+        getOperatorCompleteData: function(operatorData) {
             infos = $.extend(true, {}, operatorData.properties);
             
             for (var connectorId in infos.inputs) {
@@ -363,8 +363,8 @@ $(function() {
             return infos;
         },
         
-        getOperatorFullElement: function(operatorData) {
-            var infos = this.getOperatorFullInfos(operatorData);
+        _getOperatorFullElement: function(operatorData) {
+            var infos = this.getOperatorCompleteData(operatorData);
             
             var $operator = $('<div class="flowchart-operator"></div>');
             $operator.addClass(infos.class);
@@ -421,12 +421,12 @@ $(function() {
         },
         
         getOperatorElement: function(operatorData) {
-            var fullElement = this.getOperatorFullElement(operatorData);
+            var fullElement = this._getOperatorFullElement(operatorData);
             return fullElement.operator;
         },
         
         createOperator: function(operatorId, operatorData) {
-            var fullElement = this.getOperatorFullElement(operatorData);
+            var fullElement = this._getOperatorFullElement(operatorData);
             if (!this.options.onOperatorCreate(operatorId, operatorData, fullElement)) {
                 return false;
             }
@@ -724,7 +724,7 @@ $(function() {
         },
         
         setOperatorData: function(operatorId, operatorData) {
-            var infos = this.getOperatorFullInfos(operatorData);
+            var infos = this.getOperatorCompleteData(operatorData);
             for (var linkId in this.data.links) {
                 var linkData = this.data.links[linkId];
                 console.log(linkData, linkData.from_operator == linkId, typeof infos.outputs[linkData.from_connector] == 'undefined');

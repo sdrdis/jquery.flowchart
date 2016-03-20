@@ -75,12 +75,12 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 * __multipleLinksOnOutput (default: false):__ Allows multiple links on the same output connector.
 
 * __onOperatorSelect (default: function returning true):__ Callback method. Called when an operator is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __operatorId__ ID of the operator.
+  * __operatorId:__ ID of the operator.
 
 * __onOperatorUnselect (default: function returning true):__ Callback method. Called when an operator is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
 * __onLinkSelect (default: function returning true):__ Callback method. Called when a link is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __linkId__ ID of the link.
+  * __linkId:__ ID of the link.
 
 * __onLinkUnselect (default: function returning true):__ Callback method. Called when a link is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
@@ -90,7 +90,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __fullElement:__ Hash containing DOM elements of the operator. The structure is the same as what is returned by the `getOperatorElement` function.
 
 * __onOperatorDelete (default: function returning true):__ Callback method. Called when an operator is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
-  * __operatorId__ ID of the operator.
+  * __operatorId:__ ID of the operator.
 
 * __onLinkCreate (default: function returning true):__ Callback method. Called when a link is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
   * __linkId:__ ID of the link.
@@ -105,19 +105,60 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 
 * __Methods related to operators:__
-  * __createOperator:__ (operatorId, operatorData)
-  * __deleteOperator:__ (operatorId)
-  * __getSelectedOperatorId:__ ()
-  * __selectOperator:__ (operatorId)
-  * __unselectOperator:__ ()
-  * __setOperatorTitle:__ (operatorId, title)
-  * __getOperatorTitle:__ (operatorId)
-  * __setOperatorData:__ (operatorId, operatorData)
-  * __getOperatorData:__ (operatorId)
-  * __getConnectorPosition:__ (operator, connector)
-  * __getOperatorFullInfos:__ (operatorData)
-  * __getOperatorFullElement:__ (operatorData)
+
+  * __createOperator(operatorId, operatorData):__
+    * __Parameters:__
+      * __operatorId__
+      * __operatorData:__ Same as in `data.operators`.
+
+  * __deleteOperator(operatorId):__
+    * __Parameters:__
+      * __operatorId__
+
+  * __getSelectedOperatorId():__
+    * __Return:__ The operator ID if one is selected, `null`otherwise.
+
+  * __selectOperator(operatorId):__
+    * __Parameters:__
+      * __operatorId__
+
+  * __unselectOperator():__
+
+  * __setOperatorTitle(operatorId, title):__
+    * __Parameters:__
+      * __operatorId__
+      * __title:__ The operator's new title to be set.
+      
+  * __getOperatorTitle(operatorId):__
+    * __Parameters:__
+      * __operatorId__
+    * __Return:__ The operator's title.
+
+  * __setOperatorData(operatorId, operatorData):__
+    * __Description:__ This method replaces the operator's data. Note that if new connectors are renamed / removed, the flowchart can remove links.
+    * __Parameters:__
+      * __operatorId__
+      * __operatorData__: Same as in `data.operators`.
+  
+  * __getOperatorData(operatorId):__
+    * __Parameters:__
+      * __operatorId__
+    * __Return:__ The operator's data. Same as in `data.operators`.
+  
+  * __getConnectorPosition(operatorId, connectorId):__ 
+    * __Parameters:__
+      * __operatorId__
+      * __connectorId__
+    * __Return:__ The connector's position relative to the container.
+  
+  * __getOperatorCompleteData(operatorData):__
+    * __Parameters:__
+      * __operatorData:__ The operator's data. Same as in `data.operators`.
+    * __Return:__ Completes the operator's data with default values if some keys are not defined (like `class` for instance).
   * __getOperatorElement:__ (operatorData)
+    * __Parameters:__
+      * __operatorData:__ The operator's data. Same as in `data.operators`.
+    * __Return:__ The operator's DOM element (jquery). The element is not added in the container. It can be used to preview the operator or showing it during a drag and drop operation.
 
 * __Methods related to links:__
   * __createLink:__ (linkId, linkData)

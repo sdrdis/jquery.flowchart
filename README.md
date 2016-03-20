@@ -152,7 +152,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __Parameters:__
     * __operatorData:__ The operator's data. Same as in `data.operators`.
   * __Return:__ Completes the operator's data with default values if some keys are not defined (like `class` for instance).
-* __getOperatorElement:__ (operatorData)
+* __getOperatorElement(operatorData):__
   * __Parameters:__
     * __operatorData:__ The operator's data. Same as in `data.operators`.
   * __Return:__ The operator's DOM element (jquery). The element is not added in the container. It can be used to preview the operator or showing it during a drag and drop operation.
@@ -198,7 +198,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __linkId__
     * __color__
 
-* __uncolorizeLink:__ (linkId)
+* __uncolorizeLink(linkId):__
   * __Description:__ Sets the link color back to its main color.
   * __Parameters:__
     * __linkId__

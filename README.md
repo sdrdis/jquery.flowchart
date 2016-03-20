@@ -14,7 +14,7 @@ Here are the main functionalities provided so far:
 * Methods are provided so that the end-user can edit the flow chart by adding / moving / removing operators, creating / removing connections between them.
 * The developper can save / load the flowchart.
 * Operators and links can be customized using CSS and the plugin parameters.
-* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/)
+* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/advanced.html)
 
 Licence
 -------
@@ -209,8 +209,18 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
   
 #### Misc:
-* __getData:__ ()
-* __setData:__ (data)
-* __setPositionRatio:__(positionRatio)
-* __getPositionRatio:__ ()
-* __deleteSelected:__ ()
+* __getData():__
+  * __Return:__ The flow chart's data. Same structure as the `data` option.
+* __setData(data):__
+  * __Parameters:__
+    * __data:__ Same structure as the `data` option.
+
+* __setPositionRatio(positionRatio):__
+  * __Parameters:__
+    * __positionRatio:__ The ratio between the mouse position and the position of the DOM elements. Used when drag and dropping the operators. You should use it if you zoom the container. See the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/advanced.html).
+
+* __getPositionRatio():__
+  * __Return:__ The position ratio.
+
+* __deleteSelected():__
+  * __Description:__ Deletes the link or operator selected.

@@ -35,108 +35,108 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 ### Options:
 
-* __ canUserEditLinks (default: true):__ Can the user add links by clicking on connectors. Note that links can be removed during the process if `multipleLinksOnInput`of `multipleLinksOnOutput`are set to false.
+* __canUserEditLinks (default: true):__ Can the user add links by clicking on connectors. Note that links can be removed during the process if `multipleLinksOnInput`of `multipleLinksOnOutput`are set to false.
 
-* __ canUserMoveOperators (default: true):__ Can the user move operators using drag and drop.
+* __canUserMoveOperators (default: true):__ Can the user move operators using drag and drop.
 
-* __ data (default: `{}`):__ Initialization data defining the flow chart operators and links between them.
+* __data (default: `{}`):__ Initialization data defining the flow chart operators and links between them.
 
-  * __ operators:__ Hash defining the operators in your flow chart. The keys define the operators ID and the value define each operator's information as follow:
-    * __ top (in px)__
-    * __ left (in px)__
-    * __ properties:__
-      * __ title__
-      * __ class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
+  * __operators:__ Hash defining the operators in your flow chart. The keys define the operators ID and the value define each operator's information as follow:
+    * __top (in px)__
+    * __left (in px)__
+    * __properties:__
+      * __title__
+      * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
       * __inputs:__ Hash defining the box's input connectors. The keys define the connectors ID and the values define each connector's information as follow:
         * __label__
       * __outputs:__ Hash defining the box's output connectors. Same structure as `inputs`.
       
-  * __ links:__ Hash defining the links between your operators in your flow chart. The keys define the link ID and the value define each link's information as follow:
-    * __ from_operator:__ ID of the operator the link comes from.
-    * __ from_connector:__ ID of the connector the link comes from.
-    * __ to_operator:__ ID of the operator the link goes to.
-    * __ to_connector:__ ID of the connector the link goes to.
-    * __ color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
+  * __links:__ Hash defining the links between your operators in your flow chart. The keys define the link ID and the value define each link's information as follow:
+    * __from_operator:__ ID of the operator the link comes from.
+    * __from_connector:__ ID of the connector the link comes from.
+    * __to_operator:__ ID of the operator the link goes to.
+    * __to_connector:__ ID of the connector the link goes to.
+    * __color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
     
-* __ distanceFromArrow (default: 3):__ Distance between the output connector and the link.
+* __distanceFromArrow (default: 3):__ Distance between the output connector and the link.
 
-* __ defaultLinkColor (default: '#3366ff'):__ Default color of links.
+* __defaultLinkColor (default: '#3366ff'):__ Default color of links.
 
-* __ defaultSelectedLinkColor (default: 'black'):__ Default color of links when selected.
+* __defaultSelectedLinkColor (default: 'black'):__ Default color of links when selected.
 
-* __ defaultOperatorClass (default: 'flowchart-default-operator'):__ Default class of the operator DOM element. 
+* __defaultOperatorClass (default: 'flowchart-default-operator'):__ Default class of the operator DOM element. 
 
-* __ linkWidth (default: 11):__ Width of the links.
+* __linkWidth (default: 11):__ Width of the links.
 
-* __ grid (default: 20):__ Grid of the operators when moved.
+* __grid (default: 20):__ Grid of the operators when moved.
 
-* __ multipleLinksOnInput (default: false):__ Allows multiple links on the same input connector.
+* __multipleLinksOnInput (default: false):__ Allows multiple links on the same input connector.
 
-* __ multipleLinksOnOutput (default: false):__ Allows multiple links on the same output connector.
+* __multipleLinksOnOutput (default: false):__ Allows multiple links on the same output connector.
 
-* __ onOperatorSelect (default: function returning true):__ Callback method. Called when an operator is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __ operatorId __ ID of the operator.
+* __onOperatorSelect (default: function returning true):__ Callback method. Called when an operator is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
+  * __operatorId __ ID of the operator.
 
-* __ onOperatorUnselect (default: function returning true):__ Callback method. Called when an operator is unselected. It should return a boolean. Returning `false` cancels the unselection.
+* __onOperatorUnselect (default: function returning true):__ Callback method. Called when an operator is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
-* __ onLinkSelect (default: function returning true):__ Callback method. Called when a link is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
-  * __ linkId __ ID of the link.
+* __onLinkSelect (default: function returning true):__ Callback method. Called when a link is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
+  * __linkId __ ID of the link.
 
-* __ onLinkUnselect (default: function returning true):__ Callback method. Called when a link is unselected. It should return a boolean. Returning `false` cancels the unselection.
+* __onLinkUnselect (default: function returning true):__ Callback method. Called when a link is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
-* __ onOperatorCreate (default: function returning true):__ Callback method. Called when an operator is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
-  * __ operatorId:__ ID of the operator.
-  * __ operatorData:__ Data of the operator.
-  * __ fullElement:__ Hash containing DOM elements of the operator. The structure is the same as what is returned by the `getOperatorElement` function.
+* __onOperatorCreate (default: function returning true):__ Callback method. Called when an operator is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
+  * __operatorId:__ ID of the operator.
+  * __operatorData:__ Data of the operator.
+  * __fullElement:__ Hash containing DOM elements of the operator. The structure is the same as what is returned by the `getOperatorElement` function.
 
-* __ onOperatorDelete (default: function returning true):__ Callback method. Called when an operator is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
-  * __ operatorId __ ID of the operator.
+* __onOperatorDelete (default: function returning true):__ Callback method. Called when an operator is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
+  * __operatorId __ ID of the operator.
 
-* __ onLinkCreate (default: function returning true):__ Callback method. Called when a link is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
-  * __ linkId:__ ID of the link.
-  * __ linkData:__ Data of the link.
+* __onLinkCreate (default: function returning true):__ Callback method. Called when a link is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
+  * __linkId:__ ID of the link.
+  * __linkData:__ Data of the link.
 
-* __ onLinkDelete (default: function returning true):__ Callback method. Called when a link is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
-  * __ linkId:__ ID of the link.
-  * __ forced:__ The link deletion can not be cancelled since it happens during an operator deletion.
+* __onLinkDelete (default: function returning true):__ Callback method. Called when a link is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
+  * __linkId:__ ID of the link.
+  * __forced:__ The link deletion can not be cancelled since it happens during an operator deletion.
 
 
 ### Functions
 
 
-* __ Methods related to operators: __
-  * __ createOperator: __ (operatorId, operatorData)
-  * __ deleteOperator: __ (operatorId)
-  * __ getSelectedOperatorId: __ ()
-  * __ selectOperator: __ (operatorId)
-  * __ unselectOperator: __ ()
-  * __ setOperatorTitle: __ (operatorId, title)
-  * __ getOperatorTitle: __ (operatorId)
-  * __ setOperatorData: __ (operatorId, operatorData)
-  * __ getOperatorData: __ (operatorId)
-  * __ getConnectorPosition: __ (operator, connector)
-  * __ getOperatorFullInfos: __ (operatorData)
-  * __ getOperatorFullElement: __ (operatorData)
-  * __ getOperatorElement: __ (operatorData)
+* __Methods related to operators:__
+  * __createOperator:__ (operatorId, operatorData)
+  * __deleteOperator:__ (operatorId)
+  * __getSelectedOperatorId:__ ()
+  * __selectOperator:__ (operatorId)
+  * __unselectOperator:__ ()
+  * __setOperatorTitle:__ (operatorId, title)
+  * __getOperatorTitle:__ (operatorId)
+  * __setOperatorData:__ (operatorId, operatorData)
+  * __getOperatorData:__ (operatorId)
+  * __getConnectorPosition:__ (operator, connector)
+  * __getOperatorFullInfos:__ (operatorData)
+  * __getOperatorFullElement:__ (operatorData)
+  * __getOperatorElement:__ (operatorData)
 
-* __ Methods related to links: __
-  * __createLink: __ (linkId, linkData)
-  * __addLink: __ (linkData)
-  * __deleteLink: __ (linkId)
-  * __getSelectedLinkId: __ ()
-  * __selectLink: __ (linkId)
-  * __unselectLink: __ ()
-  * __getLinkMainColor: __ (linkId)
-  * __setLinkMainColor: __ (linkId, color)
-  * __colorizeLink: __ (linkId, color)
-  * __uncolorizeLink: __ (linkId)
-  * __redrawLinksLayer: __ ()
+* __Methods related to links:__
+  * __createLink:__ (linkId, linkData)
+  * __addLink:__ (linkData)
+  * __deleteLink:__ (linkId)
+  * __getSelectedLinkId:__ ()
+  * __selectLink:__ (linkId)
+  * __unselectLink:__ ()
+  * __getLinkMainColor:__ (linkId)
+  * __setLinkMainColor:__ (linkId, color)
+  * __colorizeLink:__ (linkId, color)
+  * __uncolorizeLink:__ (linkId)
+  * __redrawLinksLayer:__ ()
   
 
   
-* __ Misc methods: __
-  * __ getData: __ ()
-  * __ setData: __ (data)
-  * __ setPositionRatio: __(positionRatio)
-  * __ getPositionRatio: __ ()
-  * __ deleteSelected: __ ()
+* __Misc methods:__
+  * __getData:__ ()
+  * __setData:__ (data)
+  * __setPositionRatio:__(positionRatio)
+  * __getPositionRatio:__ ()
+  * __deleteSelected:__ ()

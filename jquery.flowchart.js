@@ -11,7 +11,7 @@ $(function() {
             defaultOperatorClass: 'flowchart-default-operator',
             defaultLinkColor: '#3366ff',
             defaultSelectedLinkColor: 'black',
-            linkWidth: 11,
+            linkWidth: 10,
             grid: 20,
             multipleLinksOnOutput: false,
             multipleLinksOnInput: false,
@@ -40,19 +40,8 @@ $(function() {
                 return true;
             }
         },
-        data: {
-            operators: {},
-            links: {},
-        },
-        objs: {
-            layers: {
-                operators: null,
-                temporaryLink: null,
-                links: null
-            },
-            linksContext: null,
-            temporaryLink: null
-        },
+        data: null,
+        objs: null,
         maskNum: 0,
         linkNum: 0,
         lastOutputConnectorClicked: null,
@@ -63,6 +52,8 @@ $(function() {
 
         // the constructor
         _create: function() {
+            this._unitVariables();  
+          
             this.element.addClass('flowchart-container');
             
             this.objs.layers.links = $('<svg class="flowchart-links-layer"></svg>');
@@ -91,6 +82,22 @@ $(function() {
             if (typeof this.options.data != 'undefined') {
                 this.setData(this.options.data);
             }
+        },
+      
+        _unitVariables: function() {
+            this.data = {
+                operators: {},
+                links: {},
+            };
+            this.objs = {
+                layers: {
+                    operators: null,
+                    temporaryLink: null,
+                    links: null
+                },
+                linksContext: null,
+                temporaryLink: null
+            };
         },
         
         _initEvents: function() {
@@ -179,11 +186,11 @@ $(function() {
             if (!multipleLinksOnOutput || !multipleLinksOnInput) {
                 for (var linkId2 in this.data.links) {
                     var currentLink = this.data.links[linkId2];
-                    if (!multipleLinksOnOutput && currentLink.from_operator == linkData.from_operator && currentLink.from_connector == linkData.from_connector) {
+                    if (!multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }
-                    if (!multipleLinksOnInput && currentLink.to_operator == linkData.to_operator && currentLink.to_connector == linkData.to_connector) {
+                    if (!multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }
@@ -219,8 +226,8 @@ $(function() {
             
             var x = (connectorOffset.left - elementOffset.left) / this.positionRatio;
             var width = parseInt($connector.css('border-top-width'));
-            var y = (connectorOffset.top - elementOffset.top) / this.positionRatio + parseInt($connector.css('border-left-width'));
-            
+            var y = (connectorOffset.top - elementOffset.top - 1) / this.positionRatio + parseInt($connector.css('border-left-width'));
+          
             return {x: x, width: width, y: y};
         },
         
@@ -245,10 +252,10 @@ $(function() {
             }
             linkData.internal.els = {};
             
-            var fromOperatorId = linkData.from_operator;
-            var fromConnectorId = linkData.from_connector;
-            var toOperatorId = linkData.to_operator;
-            var toConnectorId = linkData.to_connector;
+            var fromOperatorId = linkData.fromOperator;
+            var fromConnectorId = linkData.fromConnector;
+            var toOperatorId = linkData.toOperator;
+            var toConnectorId = linkData.toConnector;
             
             var color = this.getLinkMainColor(linkId);
             
@@ -315,8 +322,8 @@ $(function() {
             var linkData = this.data.links[linkId];
             
             
-            var fromPosition = this.getConnectorPosition(linkData.from_operator, linkData.from_connector);
-            var toPosition = this.getConnectorPosition(linkData.to_operator, linkData.to_connector);
+            var fromPosition = this.getConnectorPosition(linkData.fromOperator, linkData.fromConnector);
+            var toPosition = this.getConnectorPosition(linkData.toOperator, linkData.toConnector);
             
             var fromX = fromPosition.x;
             var offsetFromX = fromPosition.width;
@@ -340,6 +347,7 @@ $(function() {
             linkData.internal.els.rect.setAttribute("y", fromY - this.options.linkWidth / 2);
             linkData.internal.els.rect.setAttribute("width", offsetFromX + distanceFromArrow+1);
             linkData.internal.els.rect.setAttribute("height", this.options.linkWidth);
+            
         },
         
         getOperatorCompleteData: function(operatorData) {
@@ -458,7 +466,7 @@ $(function() {
                 
                 for (var linkId in self.data.links) {
                     var linkData = self.data.links[linkId];
-                    if (linkData.from_operator == operator_id || linkData.to_operator == operator_id) {
+                    if (linkData.fromOperator == operator_id || linkData.toOperator == operator_id) {
                         self._refreshLinkPositions(linkId);
                     }
                 }
@@ -470,6 +478,7 @@ $(function() {
                 var pointerX;
                 var pointerY;
                 fullElement.operator.draggable({
+                    handle: '.flowchart-operator-title',
                     start: function(e, ui) {
                         if (self.lastOutputConnectorClicked != null) {
                             e.preventDefault();
@@ -490,10 +499,6 @@ $(function() {
                         operatorChangedPosition($(this).data('operator_id'), ui.position);
                     },
                     stop: function(e, ui){
-                        if (ui.position.top != ui.originalPosition.top || ui.position.left != ui.originalPosition.left) {
-                            var d = new Date();
-                            fullElement.operator.data('lastDragDropStopTime', d.getTime());
-                        }
                         self._unsetTemporaryLink();
                         operatorChangedPosition($(this).data('operator_id'), ui.position);
                     },
@@ -503,26 +508,23 @@ $(function() {
         
         _connectorClicked: function(operator, connector, connectorCategory) {
             if (connectorCategory == 'outputs') {
-                var lastDragDropStopTime = this.data.operators[operator].internal.els.operator.data('lastDragDropStopTime');
                 var d = new Date();
                 var currentTime = d.getTime();
-                if (typeof lastDragDropStopTime == 'undefined' || d > lastDragDropStopTime + 50) {
-                    this.lastOutputConnectorClicked = {operator: operator, connector: connector};
-                    this.objs.layers.temporaryLink.show();
-                    var position = this.getConnectorPosition(operator, connector);
-                    var x = position.x + position.width;
-                    var y = position.y;
-                    this.objs.temporaryLink.setAttribute('x1', x);
-                    this.objs.temporaryLink.setAttribute('y1', y);
-                    this._mousemove(x, y);
-                }
+                this.lastOutputConnectorClicked = {operator: operator, connector: connector};
+                this.objs.layers.temporaryLink.show();
+                var position = this.getConnectorPosition(operator, connector);
+                var x = position.x + position.width;
+                var y = position.y;
+                this.objs.temporaryLink.setAttribute('x1', x);
+                this.objs.temporaryLink.setAttribute('y1', y);
+                this._mousemove(x, y);
             }
             if (connectorCategory == 'inputs' && this.lastOutputConnectorClicked != null) {
                 var linkData = {
-                    from_operator: this.lastOutputConnectorClicked.operator,
-                    from_connector: this.lastOutputConnectorClicked.connector,
-                    to_operator: operator,
-                    to_connector: connector
+                    fromOperator: this.lastOutputConnectorClicked.operator,
+                    fromConnector: this.lastOutputConnectorClicked.connector,
+                    toOperator: operator,
+                    toConnector: connector
                 };
                 
                 this.addLink(linkData);
@@ -652,7 +654,7 @@ $(function() {
             if (!replace) {
                 for (var linkId in this.data.links) {
                     var currentLink = this.data.links[linkId];
-                    if (currentLink.from_operator == operatorId || currentLink.to_operator == operatorId) {
+                    if (currentLink.fromOperator == operatorId || currentLink.toOperator == operatorId) {
                         this._deleteLink(linkId, true);
                     }
                 }
@@ -727,11 +729,11 @@ $(function() {
             var infos = this.getOperatorCompleteData(operatorData);
             for (var linkId in this.data.links) {
                 var linkData = this.data.links[linkId];
-                console.log(linkData, linkData.from_operator == linkId, typeof infos.outputs[linkData.from_connector] == 'undefined');
-                if ((linkData.from_operator == operatorId &&
-                    typeof infos.outputs[linkData.from_connector] == 'undefined') ||
-                    (linkData.to_operator == operatorId &&
-                    typeof infos.inputs[linkData.to_connector] == 'undefined')) {
+                console.log(linkData, linkData.fromOperator == linkId, typeof infos.outputs[linkData.fromConnector] == 'undefined');
+                if ((linkData.fromOperator == operatorId &&
+                    typeof infos.outputs[linkData.fromConnector] == 'undefined') ||
+                    (linkData.toOperator == operatorId &&
+                    typeof infos.inputs[linkData.toConnector] == 'undefined')) {
                         this._deleteLink(linkId, true);
                         continue;
                 }

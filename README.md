@@ -16,9 +16,9 @@ Here are the main functionalities provided so far:
 * Operators and links can be customized using CSS and the plugin parameters.
 * Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/advanced.html)
 
-Licence
+License
 -------
-jquery.earth3d.js is under [MIT licence](https://github.com/sdrdis/jquery.flowchart/blob/master/MIT-LICENSE.txt).
+jquery.flowchart.js is under [MIT license](https://github.com/sdrdis/jquery.flowchart/blob/master/MIT-LICENSE.txt).
 
 Authors
 -------

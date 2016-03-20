@@ -4,14 +4,17 @@ $(function() {
     $.widget( "flowchart.flowchart", {
         // default options
         options: {
-            defaultLinkColor: '#3366ff',
-            defaultSelectedLinkColor: 'black',
-            multipleLinksOnOutput: false,
-            multipleLinksOnInput: false,
-            lineWidth: 11,
+            canUserEditLinks: true,
+            canUserMoveOperators: true,
+            data: {},
             distanceFromArrow: 3,
             defaultOperatorClass: 'flowchart-default-operator',
+            defaultLinkColor: '#3366ff',
+            defaultSelectedLinkColor: 'black',
+            linkWidth: 11,
             grid: 20,
+            multipleLinksOnOutput: false,
+            multipleLinksOnInput: false,
             onOperatorSelect: function(operatorId) {
                 return true;
             },
@@ -120,7 +123,9 @@ $(function() {
             
             this.objs.layers.operators.on('click', '.flowchart-operator-connector', function() {
                 var $this = $(this);
-                self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('connector_type'));
+                if (self.options.canUserEditLinks) {
+                    self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('connector_type'));
+                }
             });
             
             this.objs.layers.links.on('mousedown touchstart', '.flowchart-link', function(e) {
@@ -143,7 +148,7 @@ $(function() {
         },
         
         setData: function(data) {
-            this.clearOperatorsLayer();
+            this._clearOperatorsLayer();
             this.data.operators = {};
             for (var operatorId in data.operators) {
                 this.createOperator(operatorId, data.operators[operatorId]);
@@ -186,22 +191,22 @@ $(function() {
             }
             
             this.data.links[linkId] = linkData;
-            this.drawLink(linkId);
+            this._drawLink(linkId);
         },
         
         redrawLinksLayer: function() {
-            this.clearLinksLayer();
+            this._clearLinksLayer();
             for (var linkId in this.data.links) {
-                this.drawLink(linkId);
+                this._drawLink(linkId);
             }
         },
         
-        clearLinksLayer: function() {
+        _clearLinksLayer: function() {
             this.objs.layers.links.empty();
             this.objs.layers.operators.find('.flowchart-operator-connector-small-arrow').css('border-left-color', 'transparent');
         },
         
-        clearOperatorsLayer: function() {
+        _clearOperatorsLayer: function() {
             this.objs.layers.operators.empty();
         },
         
@@ -232,7 +237,7 @@ $(function() {
             this.data.links[linkId].color = color;
         },
         
-        drawLink: function(linkId) {
+        _drawLink: function(linkId) {
             var linkData = this.data.links[linkId];
             
             if (typeof linkData.internal == 'undefined') {
@@ -290,7 +295,7 @@ $(function() {
             
             
             var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            shape.setAttribute("stroke-width", this.options.lineWidth);
+            shape.setAttribute("stroke-width", this.options.linkWidth);
             shape.setAttribute("fill", "none");
             group.appendChild(shape);
             linkData.internal.els.path = shape;
@@ -302,11 +307,11 @@ $(function() {
             linkData.internal.els.rect = shape;
             
             
-            this.refreshLinkPositions(linkId);
+            this._refreshLinkPositions(linkId);
             this.uncolorizeLink(linkId);
         },
         
-        refreshLinkPositions: function(linkId) {
+        _refreshLinkPositions: function(linkId) {
             var linkData = this.data.links[linkId];
             
             
@@ -332,16 +337,13 @@ $(function() {
             linkData.internal.els.path.setAttribute("d", 'M'+bezierFromX+','+(fromY)+' C'+(fromX + offsetFromX + distanceFromArrow + bezierIntensity)+','+fromY+' '+(toX - bezierIntensity)+','+toY+' '+bezierToX+','+toY);
             
             linkData.internal.els.rect.setAttribute("x", fromX);
-            linkData.internal.els.rect.setAttribute("y", fromY - this.options.lineWidth / 2);
+            linkData.internal.els.rect.setAttribute("y", fromY - this.options.linkWidth / 2);
             linkData.internal.els.rect.setAttribute("width", offsetFromX + distanceFromArrow+1);
-            linkData.internal.els.rect.setAttribute("height", this.options.lineWidth);
+            linkData.internal.els.rect.setAttribute("height", this.options.linkWidth);
         },
         
         getOperatorFullInfos: function(operatorData) {
-            var infos = $.extend(true, {}, this.options.operatorTypes[operatorData.type]);
-            if (typeof operatorData.properties != 'undefined') {
-                infos = $.extend(true, infos, operatorData.properties);
-            }
+            infos = $.extend(true, {}, operatorData.properties);
             
             for (var connectorId in infos.inputs) {
                 if (infos.inputs[connectorId] == null) {
@@ -457,44 +459,46 @@ $(function() {
                 for (var linkId in self.data.links) {
                     var linkData = self.data.links[linkId];
                     if (linkData.from_operator == operator_id || linkData.to_operator == operator_id) {
-                        self.refreshLinkPositions(linkId);
+                        self._refreshLinkPositions(linkId);
                     }
                 }
             }
             
             // Small fix has been added in order to manage eventual zoom
             // http://stackoverflow.com/questions/2930092/jquery-draggable-with-zoom-problem
-            var pointerX;
-            var pointerY;
-            fullElement.operator.draggable({
-                start: function(e, ui) {
-                    if (self.lastOutputConnectorClicked != null) {
-                        e.preventDefault();
-                        return;
-                    }
-                    var elementOffset = self.element.offset();
-                    pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'));
-                    pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'));
-                },
-                drag: function(e, ui){
-                    var grid = self.options.grid;
-                    var elementOffset = self.element.offset();
-                    ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
-                    ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
-                    ui.offset.left = Math.round(ui.position.left + elementOffset.left);
-                    ui.offset.top = Math.round(ui.position.top + elementOffset.top);
-                    fullElement.operator.css({left: ui.position.left, top: ui.position.top});
-                    operatorChangedPosition($(this).data('operator_id'), ui.position);
-                },
-                stop: function(e, ui){
-                    if (ui.position.top != ui.originalPosition.top || ui.position.left != ui.originalPosition.left) {
-                        var d = new Date();
-                        fullElement.operator.data('lastDragDropStopTime', d.getTime());
-                    }
-                    self._unsetTemporaryLink();
-                    operatorChangedPosition($(this).data('operator_id'), ui.position);
-                },
-            });
+            if (this.options.canUserMoveOperators) {
+                var pointerX;
+                var pointerY;
+                fullElement.operator.draggable({
+                    start: function(e, ui) {
+                        if (self.lastOutputConnectorClicked != null) {
+                            e.preventDefault();
+                            return;
+                        }
+                        var elementOffset = self.element.offset();
+                        pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'));
+                        pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'));
+                    },
+                    drag: function(e, ui){
+                        var grid = self.options.grid;
+                        var elementOffset = self.element.offset();
+                        ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
+                        ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
+                        ui.offset.left = Math.round(ui.position.left + elementOffset.left);
+                        ui.offset.top = Math.round(ui.position.top + elementOffset.top);
+                        fullElement.operator.css({left: ui.position.left, top: ui.position.top});
+                        operatorChangedPosition($(this).data('operator_id'), ui.position);
+                    },
+                    stop: function(e, ui){
+                        if (ui.position.top != ui.originalPosition.top || ui.position.left != ui.originalPosition.left) {
+                            var d = new Date();
+                            fullElement.operator.data('lastDragDropStopTime', d.getTime());
+                        }
+                        self._unsetTemporaryLink();
+                        operatorChangedPosition($(this).data('operator_id'), ui.position);
+                    },
+                });
+            }
         },
         
         _connectorClicked: function(operator, connector, connectorCategory) {
@@ -588,7 +592,7 @@ $(function() {
         },
         
         // Found here : http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
-        shadeColor: function(color, percent) {   
+        _shadeColor: function(color, percent) {   
             var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
             return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
         },
@@ -607,7 +611,7 @@ $(function() {
         
         _connecterMouseOver: function(linkId) {
             if (this.selectedLinkId != linkId) {
-                this.colorizeLink(linkId, this.shadeColor(this.getLinkMainColor(linkId), -0.4));
+                this.colorizeLink(linkId, this._shadeColor(this.getLinkMainColor(linkId), -0.4));
             }
         },
         
@@ -617,7 +621,7 @@ $(function() {
             }
         },
         
-        unselectLink: function(linkId) {
+        unselectLink: function() {
             if (this.selectedLinkId != null) {
                 if (!this.options.onLinkUnselect()) {
                     return;
@@ -716,11 +720,7 @@ $(function() {
         },
         
         getOperatorTitle: function(operatorId) {
-            if (typeof this.data.operators[operatorId].properties != 'undefined' && typeof this.data.operators[operatorId].properties.title != 'undefined') {
-                return this.data.operators[operatorId].properties.title;
-            } else {
-                return this.options.operatorTypes[this.data.operators[operatorId].type].title;
-            }
+            return this.data.operators[operatorId].properties.title;
         },
         
         setOperatorData: function(operatorId, operatorData) {
@@ -745,24 +745,6 @@ $(function() {
             var data = $.extend(true, {}, this.data.operators[operatorId]);
             delete data.internal;
             return data;
-        },
-
-        // called when created, and later when changing options
-        _refresh: function() {
-        },
-
-        // events bound via _on are removed automatically
-        // revert other modifications here
-        _destroy: function() {
-        },
-
-        // _setOptions is called with a hash of all options that are changing
-        // always refresh when changing options
-        _setOptions: function() {
-        },
-
-        // _setOption is called for each individual option that is changing
-        _setOption: function( key, value ) {
         }
     });
 });

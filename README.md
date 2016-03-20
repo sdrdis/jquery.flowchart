@@ -102,82 +102,115 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 
 ### Functions
+#### Operators:
+* __createOperator(operatorId, operatorData):__
+  * __Parameters:__
+    * __operatorId__
+    * __operatorData:__ Same as in `data.operators`.
 
+* __deleteOperator(operatorId):__
+  * __Parameters:__
+    * __operatorId__
 
-* __Methods related to operators:__
+* __getSelectedOperatorId():__
+  * __Return:__ The operator ID if one is selected, `null` otherwise.
 
-  * __createOperator(operatorId, operatorData):__
-    * __Parameters:__
-      * __operatorId__
-      * __operatorData:__ Same as in `data.operators`.
+* __selectOperator(operatorId):__
+  * __Parameters:__
+    * __operatorId__
 
-  * __deleteOperator(operatorId):__
-    * __Parameters:__
-      * __operatorId__
+* __unselectOperator():__
 
-  * __getSelectedOperatorId():__
-    * __Return:__ The operator ID if one is selected, `null`otherwise.
+* __setOperatorTitle(operatorId, title):__
+  * __Parameters:__
+    * __operatorId__
+    * __title:__ The operator's new title to be set.
 
-  * __selectOperator(operatorId):__
-    * __Parameters:__
-      * __operatorId__
+* __getOperatorTitle(operatorId):__
+  * __Parameters:__
+    * __operatorId__
+  * __Return:__ The operator's title.
 
-  * __unselectOperator():__
+* __setOperatorData(operatorId, operatorData):__
+  * __Description:__ This method replaces the operator's data. Note that if new connectors are renamed / removed, the flowchart can remove links.
+  * __Parameters:__
+    * __operatorId__
+    * __operatorData__: Same as in `data.operators`.
 
-  * __setOperatorTitle(operatorId, title):__
-    * __Parameters:__
-      * __operatorId__
-      * __title:__ The operator's new title to be set.
-      
-  * __getOperatorTitle(operatorId):__
-    * __Parameters:__
-      * __operatorId__
-    * __Return:__ The operator's title.
+* __getOperatorData(operatorId):__
+  * __Parameters:__
+    * __operatorId__
+  * __Return:__ The operator's data. Same as in `data.operators`.
 
-  * __setOperatorData(operatorId, operatorData):__
-    * __Description:__ This method replaces the operator's data. Note that if new connectors are renamed / removed, the flowchart can remove links.
-    * __Parameters:__
-      * __operatorId__
-      * __operatorData__: Same as in `data.operators`.
+* __getConnectorPosition(operatorId, connectorId):__ 
+  * __Parameters:__
+    * __operatorId__
+    * __connectorId__
+  * __Return:__ The connector's position relative to the container.
+
+* __getOperatorCompleteData(operatorData):__
+  * __Parameters:__
+    * __operatorData:__ The operator's data. Same as in `data.operators`.
+  * __Return:__ Completes the operator's data with default values if some keys are not defined (like `class` for instance).
+* __getOperatorElement:__ (operatorData)
+  * __Parameters:__
+    * __operatorData:__ The operator's data. Same as in `data.operators`.
+  * __Return:__ The operator's DOM element (jquery). The element is not added in the container. It can be used to preview the operator or showing it during a drag and drop operation.
+
+#### Links:
+* __createLink(linkId, linkData):__
+  * __Parameters:__
+    * __linkId__
+    * __linkData:__ Same as in `data.links`.
+
+* __addLink(linkData):__
+  * __Description:__ Same as `createLinks`, but automatically sets the link's ID.
+  * __Parameters:__
+    * __linkData:__ Same as in `data.links`.
+  * __Return:__ The link's ID.
+
+* __deleteLink(linkId):__
+  * __Parameters:__
+    * __linkId__
+
+* __getSelectedLinkId():__ 
+  * __Return:__ The link ID if one is selected, `null` otherwise.
   
-  * __getOperatorData(operatorId):__
-    * __Parameters:__
-      * __operatorId__
-    * __Return:__ The operator's data. Same as in `data.operators`.
-  
-  * __getConnectorPosition(operatorId, connectorId):__ 
-    * __Parameters:__
-      * __operatorId__
-      * __connectorId__
-    * __Return:__ The connector's position relative to the container.
-  
-  * __getOperatorCompleteData(operatorData):__
-    * __Parameters:__
-      * __operatorData:__ The operator's data. Same as in `data.operators`.
-    * __Return:__ Completes the operator's data with default values if some keys are not defined (like `class` for instance).
-  * __getOperatorElement:__ (operatorData)
-    * __Parameters:__
-      * __operatorData:__ The operator's data. Same as in `data.operators`.
-    * __Return:__ The operator's DOM element (jquery). The element is not added in the container. It can be used to preview the operator or showing it during a drag and drop operation.
+* __selectLink(linkId):__
+  * __Parameters:__
+    * __linkId__
 
-* __Methods related to links:__
-  * __createLink:__ (linkId, linkData)
-  * __addLink:__ (linkData)
-  * __deleteLink:__ (linkId)
-  * __getSelectedLinkId:__ ()
-  * __selectLink:__ (linkId)
-  * __unselectLink:__ ()
-  * __getLinkMainColor:__ (linkId)
-  * __setLinkMainColor:__ (linkId, color)
-  * __colorizeLink:__ (linkId, color)
-  * __uncolorizeLink:__ (linkId)
-  * __redrawLinksLayer:__ ()
+* __unselectLink()__
+
+* __setLinkMainColor(linkId, color):__
+  * __Parameters:__
+    * __linkId__
+    * __color__
+
+* __getLinkMainColor(linkId):__
+  * __Parameters:__
+    * __linkId__
+  * __Returns:__ The link's color.
+
+* __colorizeLink(linkId, color):__
+  * __Description:__ Sets the link a temporary color contrary to `setLinkMainColor`. It can be used to temporarly highlight a link for instance.
+  * __Parameters:__
+    * __linkId__
+    * __color__
+
+* __uncolorizeLink:__ (linkId)
+  * __Description:__ Sets the link color back to its main color.
+  * __Parameters:__
+    * __linkId__
+
+* __redrawLinksLayer():__
+  * __Description:__ Redraws all the links.
   
 
   
-* __Misc methods:__
-  * __getData:__ ()
-  * __setData:__ (data)
-  * __setPositionRatio:__(positionRatio)
-  * __getPositionRatio:__ ()
-  * __deleteSelected:__ ()
+#### Misc:
+* __getData:__ ()
+* __setData:__ (data)
+* __setPositionRatio:__(positionRatio)
+* __getPositionRatio:__ ()
+* __deleteSelected:__ ()

@@ -14,7 +14,7 @@ Here are the main functionalities provided so far:
 * Methods are provided so that the end-user can edit the flow chart by adding / moving / removing operators, creating / removing connections between them.
 * The developper can save / load the flowchart.
 * Operators and links can be customized using CSS and the plugin parameters.
-* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/advanced.html)
+* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#advanced)
 
 License
 -------
@@ -217,7 +217,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 * __setPositionRatio(positionRatio):__
   * __Parameters:__
-    * __positionRatio:__ The ratio between the mouse position and the position of the DOM elements. Used when drag and dropping the operators. You should use it if you zoom the container. See the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/advanced.html).
+    * __positionRatio:__ The ratio between the mouse position and the position of the DOM elements. Used when drag and dropping the operators. You should use it if you zoom the container. See the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#advanced).
 
 * __getPositionRatio():__
   * __Return:__ The position ratio.

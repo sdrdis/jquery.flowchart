@@ -564,11 +564,13 @@ $(function() {
         },
         
         unselectOperator: function() {
-            if (!this.options.onOperatorUnselect()) {
-                return;
+            if (this.selectedOperatorId != null) {
+                if (!this.options.onOperatorUnselect()) {
+                    return;
+                }
+                this._removeSelectedClassOperators();
+                this.selectedOperatorId = null;
             }
-            this._removeSelectedClassOperators();
-            this.selectedOperatorId = null;
         },
         
         _addSelectedClass: function(operatorId) {
@@ -671,13 +673,13 @@ $(function() {
         },
         
         _deleteLink: function(linkId, forced) {
+            if (this.selectedLinkId == linkId) {
+                this.unselectLink();
+            }
             if (!this.options.onLinkDelete(linkId, forced)) {
                 if (!forced) {
                     return;
                 }
-            }
-            if (this.selectedLinkId == linkId) {
-                this.selectedLinkId = null;
             }
             this.colorizeLink(linkId, 'transparent');
             this.data.links[linkId].internal.els.overallGroup.remove();

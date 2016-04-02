@@ -48,10 +48,17 @@ $(function() {
         selectedOperatorId: null,
         selectedLinkId: null,
         positionRatio: 1,
+        globalId: null,
         
 
         // the constructor
         _create: function() {
+            if (typeof document.__flowchartNumber == 'undefined') {
+              document.__flowchartNumber = 0;
+            } else {
+              document.__flowchartNumber++;
+            }
+            this.globalId = document.__flowchartNumber;
             this._unitVariables();  
           
             this.element.addClass('flowchart-container');
@@ -273,7 +280,7 @@ $(function() {
             linkData.internal.els.overallGroup = overallGroup;
             
             var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
-            var maskId = "fc_mask_" + this.maskNum;
+            var maskId = "fc_mask_" + this.globalId + "_" + this.maskNum;
             this.maskNum++;
             mask.setAttribute("id", maskId);
             

@@ -33,6 +33,8 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 ### Terminology:
 
+![Terminology](http://sebastien.drouyer.com/jquery.flowchart-demo/images/terminology.png)
+
 ### Options:
 
 * __canUserEditLinks (default: true):__ Can the user add links by clicking on connectors. Note that links can be removed during the process if `multipleLinksOnInput`of `multipleLinksOnOutput`are set to false.

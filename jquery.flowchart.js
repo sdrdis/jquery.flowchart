@@ -38,6 +38,9 @@ $(function() {
             },
             onLinkDelete: function(linkId, forced) {
                 return true;
+            },
+            onOperatorMove: function(operatorId, position) {
+              
             }
         },
         data: null,
@@ -507,7 +510,9 @@ $(function() {
                     },
                     stop: function(e, ui){
                         self._unsetTemporaryLink();
-                        operatorChangedPosition($(this).data('operator_id'), ui.position);
+                        var operatorId = $(this).data('operator_id');
+                        operatorChangedPosition(operatorId, ui.position);
+                        self.options.onOperatorMove(operatorId, ui.position);
                     },
                 });
             }

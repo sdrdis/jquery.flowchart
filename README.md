@@ -102,7 +102,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __linkId:__ ID of the link.
   * __forced:__ The link deletion can not be cancelled since it happens during an operator deletion.
 
-* __onOperatorMove (default: function):__ Callback method. Called when an operator is moved. Parameters are:
+* __onOperatorMoved (default: function):__ Callback method. Called when an operator is moved. Parameters are:
   * __operatorId:__ ID of the operator.
   * __position:__ New position of the operator.
 

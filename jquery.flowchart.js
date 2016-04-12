@@ -39,7 +39,7 @@ $(function() {
             onLinkDelete: function(linkId, forced) {
                 return true;
             },
-            onOperatorMove: function(operatorId, position) {
+            onOperatorMoved: function(operatorId, position) {
               
             }
         },
@@ -512,7 +512,7 @@ $(function() {
                         self._unsetTemporaryLink();
                         var operatorId = $(this).data('operator_id');
                         operatorChangedPosition(operatorId, ui.position);
-                        self.options.onOperatorMove(operatorId, ui.position);
+                        self.options.onOperatorMoved(operatorId, ui.position);
                     },
                 });
             }

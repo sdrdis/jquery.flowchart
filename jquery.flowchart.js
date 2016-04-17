@@ -41,6 +41,9 @@ $(function() {
             },
             onOperatorMoved: function(operatorId, position) {
               
+            },
+            onAfterChange: function(changeType) {
+              
             }
         },
         data: null,
@@ -214,6 +217,8 @@ $(function() {
             
             this.data.links[linkId] = linkData;
             this._drawLink(linkId);
+          
+            this.options.onAfterChange('link_create');
         },
         
         redrawLinksLayer: function() {
@@ -524,9 +529,12 @@ $(function() {
                         var operatorId = $(this).data('operator_id');
                         operatorChangedPosition(operatorId, ui.position);
                         self.options.onOperatorMoved(operatorId, ui.position);
+                        self.options.onAfterChange('operator_moved');
                     },
                 });
             }
+          
+            this.options.onAfterChange('operator_create');
         },
         
         _connectorClicked: function(operator, connector, connectorCategory) {
@@ -689,6 +697,8 @@ $(function() {
             }
             this.data.operators[operatorId].internal.els.operator.remove();
             delete this.data.operators[operatorId];
+          
+            this.options.onAfterChange('operator_delete');
         },
         
         deleteLink: function(linkId) {
@@ -707,6 +717,8 @@ $(function() {
             this.colorizeLink(linkId, 'transparent');
             this.data.links[linkId].internal.els.overallGroup.remove();
             delete this.data.links[linkId];
+          
+            this.options.onAfterChange('link_delete');
         },
         
         deleteSelected: function() {

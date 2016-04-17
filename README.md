@@ -108,6 +108,14 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 * __onOperatorMoved (default: function):__ Callback method. Called when an operator is moved. Parameters are:
   * __operatorId:__ ID of the operator.
   * __position:__ New position of the operator.
+  
+* __onAfterChange (default: function):__ Callback method. Called after changes have been done (operator creation for instance). Parameters are:
+  * __changeType:__ What change did occur. Can be one of these strings:
+    * operator_create
+    * link_create
+    * operator_delete
+    * link_delete
+    * operator_moved
 
 
 ### Functions

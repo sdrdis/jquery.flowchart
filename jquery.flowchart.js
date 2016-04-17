@@ -803,18 +803,22 @@ $(function() {
             return data;
         },
       
-        _refreshInternalProperties: function(operatorData) {
+        getOperatorFullProperties: function(operatorData) {
             if (typeof operatorData.type != 'undefined') {
                 var typeProperties = this.data.operatorTypes[operatorData.type];
                 var operatorProperties = {};
                 if (typeof operatorData.properties != 'undefined') {
                     operatorProperties = operatorData.properties;
                 }
-                operatorData.internal.properties = $.extend({}, typeProperties, operatorProperties);
+                return $.extend({}, typeProperties, operatorProperties);
             }
             else {
-                operatorData.internal.properties = operatorData.properties;
+                return operatorData.properties;
             }
+        },
+      
+        _refreshInternalProperties: function(operatorData) {
+            operatorData.internal.properties = this.getOperatorFullProperties(operatorData);
         }
     });
 });

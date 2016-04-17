@@ -120,6 +120,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * operator_moved
     * operator_title_change
     * operator_data_change
+    * link_change_main_color
 
 
 ### Functions

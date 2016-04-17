@@ -264,6 +264,7 @@ $(function() {
         
         setLinkMainColor: function(linkId, color) {
             this.data.links[linkId].color = color;
+            this.options.onAfterChange('link_change_main_color');
         },
         
         _drawLink: function(linkId) {

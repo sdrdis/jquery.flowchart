@@ -774,6 +774,7 @@ $(function() {
             }
             this.data.operators[operatorId].properties.title = title;
             this._refreshInternalProperties(this.data.operators[operatorId]);
+            this.options.onAfterChange('operator_title_change');
         },
         
         getOperatorTitle: function(operatorId) {
@@ -795,6 +796,7 @@ $(function() {
             this._deleteOperator(operatorId, true);
             this.createOperator(operatorId, operatorData);
             this.redrawLinksLayer();
+            this.options.onAfterChange('operator_data_change');
         },
         
         getOperatorData: function(operatorId) {

@@ -118,6 +118,8 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * operator_delete
     * link_delete
     * operator_moved
+    * operator_title_change
+    * operator_data_change
 
 
 ### Functions

@@ -50,6 +50,7 @@ $(function() {
         objs: null,
         maskNum: 0,
         linkNum: 0,
+        operatorNum: 0,
         lastOutputConnectorClicked: null,
         selectedOperatorId: null,
         selectedLinkId: null,
@@ -455,6 +456,15 @@ $(function() {
         getOperatorElement: function(operatorData) {
             var fullElement = this._getOperatorFullElement(operatorData);
             return fullElement.operator;
+        },
+      
+        addOperator: function(operatorData) {
+            while(typeof this.data.operators[this.operatorNum] != 'undefined') {
+                this.operatorNum++;
+            }
+            
+            this.createOperator(this.operatorNum, operatorData);
+            return this.operatorNum;
         },
         
         createOperator: function(operatorId, operatorData) {

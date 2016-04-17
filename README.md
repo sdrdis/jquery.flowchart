@@ -124,6 +124,12 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __Parameters:__
     * __operatorId__
     * __operatorData:__ Same as in `data.operators`.
+    
+* __addOperator(operatorData):__
+  * __Description:__ Same as `createOperator`, but automatically sets the operator's ID.
+  * __Parameters:__
+    * __operatorData:__ Same as in `data.operators`.
+  * __Return:__ The operator's ID.
 
 * __deleteOperator(operatorId):__
   * __Parameters:__

@@ -46,6 +46,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
   * __operators:__ Hash defining the operators in your flow chart. The keys define the operators ID and the value define each operator's information as follow:
     * __top (in px)__
     * __left (in px)__
+    * __type__: (optionnal) The type of the operator. See `data.operatorTypes`.
     * __properties:__
       * __title__
       * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
@@ -59,6 +60,8 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __to_operator:__ ID of the operator the link goes to.
     * __to_connector:__ ID of the connector the link goes to.
     * __color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
+    
+  * __operatorTypes:__ (optionnal) Hash allowing you to define common operator types in order to not repeat the properties key. Key define the operator's type ID and the value define the properties (same structure as `data.operators.properties`).
     
 * __distanceFromArrow (default: 3):__ Distance between the output connector and the link.
 

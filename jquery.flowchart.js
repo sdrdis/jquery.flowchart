@@ -166,6 +166,11 @@ $(function() {
         
         setData: function(data) {
             this._clearOperatorsLayer();
+            this.data.operatorTypes = {};
+            if (typeof data.operatorTypes != 'undefined') {
+              this.data.operatorTypes = data.operatorTypes;
+            }
+          
             this.data.operators = {};
             for (var operatorId in data.operators) {
                 this.createOperator(operatorId, data.operators[operatorId]);
@@ -230,7 +235,7 @@ $(function() {
         getConnectorPosition: function(operatorId, connectorId) {
             var operatorData = this.data.operators[operatorId];
             var $connector = operatorData.internal.els.connectorArrows[connectorId];
-            
+          
             var connectorOffset = $connector.offset();
             var elementOffset = this.element.offset();
             
@@ -361,7 +366,11 @@ $(function() {
         },
         
         getOperatorCompleteData: function(operatorData) {
-            infos = $.extend(true, {}, operatorData.properties);
+            if (typeof operatorData.internal == 'undefined') {
+                operatorData.internal = {};
+            }
+            this._refreshInternalProperties(operatorData);
+            infos = $.extend(true, {}, operatorData.internal.properties);
             
             for (var connectorId in infos.inputs) {
                 if (infos.inputs[connectorId] == null) {
@@ -444,6 +453,9 @@ $(function() {
         },
         
         createOperator: function(operatorId, operatorData) {
+            operatorData.internal = {};
+            this._refreshInternalProperties(operatorData);
+          
             var fullElement = this._getOperatorFullElement(operatorData);
             if (!this.options.onOperatorCreate(operatorId, operatorData, fullElement)) {
                 return false;
@@ -459,7 +471,6 @@ $(function() {
             fullElement.operator.data('operator_id', operatorId);
             
             this.data.operators[operatorId] = operatorData;
-            this.data.operators[operatorId].internal = {};
             this.data.operators[operatorId].internal.els = fullElement;
             
             if (operatorId == this.selectedOperatorId) {
@@ -717,13 +728,16 @@ $(function() {
         
         getData: function() {
             var keys = ['operators', 'links'];
-            var data = $.extend(true, {}, this.data);
+            var data = {};
+            data.operators = $.extend(true, {}, this.data.operators);
+            data.links = $.extend(true, {}, this.data.links);
             for (var keyI in keys) {
                 var key = keys[keyI];
                 for (var objId in data[key]) {
                     delete data[key][objId].internal;
                 }
             }
+            data.operatorTypes = this.data.operatorTypes;
             return data;
         },
         
@@ -733,17 +747,17 @@ $(function() {
                 this.data.operators[operatorId].properties = {};
             }
             this.data.operators[operatorId].properties.title = title;
+            this._refreshInternalProperties(this.data.operators[operatorId]);
         },
         
         getOperatorTitle: function(operatorId) {
-            return this.data.operators[operatorId].properties.title;
+            return this.data.operators[operatorId].internal.properties.title;
         },
         
         setOperatorData: function(operatorId, operatorData) {
             var infos = this.getOperatorCompleteData(operatorData);
             for (var linkId in this.data.links) {
                 var linkData = this.data.links[linkId];
-                console.log(linkData, linkData.fromOperator == linkId, typeof infos.outputs[linkData.fromConnector] == 'undefined');
                 if ((linkData.fromOperator == operatorId &&
                     typeof infos.outputs[linkData.fromConnector] == 'undefined') ||
                     (linkData.toOperator == operatorId &&
@@ -761,6 +775,20 @@ $(function() {
             var data = $.extend(true, {}, this.data.operators[operatorId]);
             delete data.internal;
             return data;
+        },
+      
+        _refreshInternalProperties: function(operatorData) {
+            if (typeof operatorData.type != 'undefined') {
+                var typeProperties = this.data.operatorTypes[operatorData.type];
+                var operatorProperties = {};
+                if (typeof operatorData.properties != 'undefined') {
+                    operatorProperties = operatorData.properties;
+                }
+                operatorData.internal.properties = $.extend({}, typeProperties, operatorProperties);
+            }
+            else {
+                operatorData.internal.properties = operatorData.properties;
+            }
         }
     });
 });

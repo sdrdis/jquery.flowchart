@@ -15,6 +15,7 @@ $(function() {
             grid: 20,
             multipleLinksOnOutput: false,
             multipleLinksOnInput: false,
+            linkVerticalDecal: 0,
             onOperatorSelect: function(operatorId) {
                 return true;
             },
@@ -352,6 +353,9 @@ $(function() {
             
             var toX = toPosition.x;
             var toY = toPosition.y;
+          
+            fromY += this.options.linkVerticalDecal;
+            toY += this.options.linkVerticalDecal;
             
             var distanceFromArrow = this.options.distanceFromArrow;
             

@@ -79,6 +79,8 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 * __multipleLinksOnOutput (default: false):__ Allows multiple links on the same output connector.
 
+* __linkVerticalDecal (default: 0):__ Allows to vertical decal the links (in case you override the CSS and links are not aligned with their connectors anymore).
+
 * __onOperatorSelect (default: function returning true):__ Callback method. Called when an operator is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
   * __operatorId:__ ID of the operator.
 

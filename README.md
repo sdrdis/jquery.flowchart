@@ -94,7 +94,11 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 * __onOperatorCreate (default: function returning true):__ Callback method. Called when an operator is created. It should return a boolean. Returning `false` cancels the creation. Parameters are:
   * __operatorId:__ ID of the operator.
   * __operatorData:__ Data of the operator.
-  * __fullElement:__ Hash containing DOM elements of the operator. The structure is the same as what is returned by the `getOperatorElement` function.
+  * __fullElement:__ Hash containing DOM elements of the operator. It contains:
+    * __operator:__ the DOM element of the whole operator.
+    * __title:__ the DOM element of the operator's title.
+    * __connectorArrows:__ the DOM element of the connectors' arrows.
+    * __connectorSmallArrows:__ the DOM element of the connectors' small arrows.
 
 * __onOperatorDelete (default: function returning true):__ Callback method. Called when an operator is deleted. It should return a boolean. Returning `false` cancels the deletion. Parameters are:
   * __operatorId:__ ID of the operator.

@@ -51,14 +51,17 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
       * __title__
       * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
       * __inputs:__ Hash defining the box's input connectors. The keys define the connectors ID and the values define each connector's information as follow:
-        * __label__
+        * __label__: Label of the connector. If the connector is __multiple__, '(:i)' is replaced by the subconnector ID.
+        * __multiple__: (optional) If `true`, whenever a link is created on the connector, another connector (called subconnector) is created. See the [multiple connectors demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#multiple).
       * __outputs:__ Hash defining the box's output connectors. Same structure as `inputs`.
       
   * __links:__ Hash defining the links between your operators in your flow chart. The keys define the link ID and the value define each link's information as follow:
-    * __from_operator:__ ID of the operator the link comes from.
-    * __from_connector:__ ID of the connector the link comes from.
-    * __to_operator:__ ID of the operator the link goes to.
-    * __to_connector:__ ID of the connector the link goes to.
+    * __fromOperator:__ ID of the operator the link comes from.
+    * __fromConnector:__ ID of the connector the link comes from.
+    * __fromSubConnector:__ (optional) If it is a multiple connector, which subconnector is it.
+    * __toOperator:__ ID of the operator the link goes to.
+    * __toConnector:__ ID of the connector the link goes to.
+    * __toSubConnector:__ (optional) If it is a multiple connector, which subconnector is it.
     * __color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
     
   * __operatorTypes:__ (optional) Hash allowing you to define common operator types in order to not repeat the properties key. Key define the operator's type ID and the value define the properties (same structure as `data.operators.properties`).

@@ -146,7 +146,7 @@ $(function() {
             this.objs.layers.operators.on('click', '.flowchart-operator-connector', function() {
                 var $this = $(this);
                 if (self.options.canUserEditLinks) {
-                    self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('connector_type'));
+                    self._connectorClicked($this.closest('.flowchart-operator').data('operator_id'), $this.data('connector'), $this.data('sub_connector'), $this.closest('.flowchart-operator-connector-set').data('connector_type'));
                 }
             });
             
@@ -200,27 +200,50 @@ $(function() {
             if (!this.options.onLinkCreate(linkId, linkData)) {
                 return;
             }
+          
+            var subConnectors = this._getSubConnectors(linkData);
+            var fromSubConnector = subConnectors[0];
+            var toSubConnector = subConnectors[1];
             
             var multipleLinksOnOutput = this.options.multipleLinksOnOutput;
             var multipleLinksOnInput = this.options.multipleLinksOnInput;
             if (!multipleLinksOnOutput || !multipleLinksOnInput) {
                 for (var linkId2 in this.data.links) {
                     var currentLink = this.data.links[linkId2];
-                    if (!multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector) {
+                  
+                    var currentSubConnectors = this._getSubConnectors(currentLink);
+                    var currentFromSubConnector = currentSubConnectors[0];
+                    var currentToSubConnector = currentSubConnectors[1];
+                    
+                    if (!multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector && currentFromSubConnector == fromSubConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }
-                    if (!multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector) {
+                    if (!multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector && currentToSubConnector == toSubConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }
                 }
             }
+          
+            this._autoCreateSubConnector(linkData.fromOperator, linkData.fromConnector, 'outputs', fromSubConnector);
+            this._autoCreateSubConnector(linkData.toOperator, linkData.toConnector, 'inputs', toSubConnector);
             
             this.data.links[linkId] = linkData;
             this._drawLink(linkId);
           
             this.options.onAfterChange('link_create');
+        },
+      
+        _autoCreateSubConnector: function(operator, connector, connectorType, subConnector) {
+            var connectorInfos = this.data.operators[operator].properties[connectorType][connector];
+            if (connectorInfos.multiple) {
+                var fromFullElement = this.data.operators[operator].internal.els;
+                var nbFromConnectors = this.data.operators[operator].internal.els.connectors[connector].length;
+                for (var i = nbFromConnectors; i < subConnector + 2; i++) {
+                    this._createSubConnector(connector, connectorInfos, fromFullElement);
+                }
+            }
         },
         
         redrawLinksLayer: function() {
@@ -239,9 +262,9 @@ $(function() {
             this.objs.layers.operators.empty();
         },
         
-        getConnectorPosition: function(operatorId, connectorId) {
+        getConnectorPosition: function(operatorId, connectorId, subConnector) {
             var operatorData = this.data.operators[operatorId];
-            var $connector = operatorData.internal.els.connectorArrows[connectorId];
+            var $connector = operatorData.internal.els.connectorArrows[connectorId][subConnector];
           
             var connectorOffset = $connector.offset();
             var elementOffset = this.element.offset();
@@ -279,14 +302,18 @@ $(function() {
             var fromConnectorId = linkData.fromConnector;
             var toOperatorId = linkData.toOperator;
             var toConnectorId = linkData.toConnector;
+          
+            var subConnectors = this._getSubConnectors(linkData);
+            var fromSubConnector = subConnectors[0];
+            var toSubConnector = subConnectors[1];
             
             var color = this.getLinkMainColor(linkId);
             
             var fromOperator = this.data.operators[fromOperatorId];
             var toOperator = this.data.operators[toOperatorId];
             
-            var fromSmallConnector = fromOperator.internal.els.connectorSmallArrows[fromConnectorId];
-            var toSmallConnector = toOperator.internal.els.connectorSmallArrows[toConnectorId];
+            var fromSmallConnector = fromOperator.internal.els.connectorSmallArrows[fromConnectorId][fromSubConnector];
+            var toSmallConnector = toOperator.internal.els.connectorSmallArrows[toConnectorId][toSubConnector];
             
             linkData.internal.els.fromSmallConnector = fromSmallConnector;
             linkData.internal.els.toSmallConnector = toSmallConnector;
@@ -340,13 +367,30 @@ $(function() {
             this._refreshLinkPositions(linkId);
             this.uncolorizeLink(linkId);
         },
+      
+        _getSubConnectors: function(linkData) {
+            var fromSubConnector = 0;
+            if (typeof linkData.fromSubConnector != 'undefined') {
+                fromSubConnector = linkData.fromSubConnector;
+            }
+
+            var toSubConnector = 0;
+            if (typeof linkData.toSubConnector != 'undefined') {
+                toSubConnector = linkData.toSubConnector;
+            }
+            
+            return [fromSubConnector, toSubConnector];
+        },
         
         _refreshLinkPositions: function(linkId) {
             var linkData = this.data.links[linkId];
             
+            var subConnectors = this._getSubConnectors(linkData);
+            var fromSubConnector = subConnectors[0];
+            var toSubConnector = subConnectors[1];
             
-            var fromPosition = this.getConnectorPosition(linkData.fromOperator, linkData.fromConnector);
-            var toPosition = this.getConnectorPosition(linkData.toOperator, linkData.toConnector);
+            var fromPosition = this.getConnectorPosition(linkData.fromOperator, linkData.fromConnector, fromSubConnector);
+            var toPosition = this.getConnectorPosition(linkData.toOperator, linkData.toConnector, toSubConnector);
             
             var fromX = fromPosition.x;
             var offsetFromX = fromPosition.width;
@@ -426,25 +470,22 @@ $(function() {
             
             var connectorArrows = {};
             var connectorSmallArrows = {};
+            var connectorSets = {};
+            var connectors = {};
+          
+            var fullElement = {operator: $operator, title: $operator_title, connectorSets: connectorSets, connectors: connectors, connectorArrows: connectorArrows, connectorSmallArrows: connectorSmallArrows};
+          
             function addConnector(connectorKey, connectorInfos, $operator_container, connectorType) {
-                var $operator_connector = $('<div class="flowchart-operator-connector"></div>');
-                $operator_connector.appendTo($operator_container);
-                $operator_connector.data('connector', connectorKey);
-                $operator_connector.data('connector_type', connectorType);
+                var $operator_connector_set = $('<div class="flowchart-operator-connector-set"></div>');
+                $operator_connector_set.data('connector_type', connectorType);
+                $operator_connector_set.appendTo($operator_container);
                 
-                var $operator_connector_label = $('<div class="flowchart-operator-connector-label"></div>');
-                $operator_connector_label.text(connectorInfos.label);
-                $operator_connector_label.appendTo($operator_connector);
-
-                var $operator_connector_arrow = $('<div class="flowchart-operator-connector-arrow"></div>');
-                
-                $operator_connector_arrow.appendTo($operator_connector);
-                
-                var $operator_connector_small_arrow = $('<div class="flowchart-operator-connector-small-arrow"></div>');
-                $operator_connector_small_arrow.appendTo($operator_connector);
-                
-                connectorArrows[connectorKey] = $operator_connector_arrow;
-                connectorSmallArrows[connectorKey] = $operator_connector_small_arrow;
+                connectorArrows[connectorKey] = [];
+                connectorSmallArrows[connectorKey] = [];
+                connectors[connectorKey] = [];
+                connectorSets[connectorKey] = $operator_connector_set;
+              
+                self._createSubConnector(connectorKey, connectorInfos, fullElement);
             }
             
             for (var key in infos.inputs) {
@@ -455,7 +496,33 @@ $(function() {
                 addConnector(key, infos.outputs[key], $operator_outputs, 'outputs');
             }
             
-            return {operator: $operator, title: $operator_title, connectorArrows: connectorArrows, connectorSmallArrows: connectorSmallArrows};
+            return fullElement;
+        },
+      
+        _createSubConnector: function(connectorKey, connectorInfos, fullElement) {
+            var $operator_connector_set = fullElement.connectorSets[connectorKey];
+          
+            var subConnector = fullElement.connectors[connectorKey].length;
+          
+            var $operator_connector = $('<div class="flowchart-operator-connector"></div>');
+            $operator_connector.appendTo($operator_connector_set);
+            $operator_connector.data('connector', connectorKey);
+            $operator_connector.data('sub_connector', subConnector);
+
+            var $operator_connector_label = $('<div class="flowchart-operator-connector-label"></div>');
+            $operator_connector_label.text(connectorInfos.label.replace('(:i)', subConnector + 1));
+            $operator_connector_label.appendTo($operator_connector);
+
+            var $operator_connector_arrow = $('<div class="flowchart-operator-connector-arrow"></div>');
+
+            $operator_connector_arrow.appendTo($operator_connector);
+
+            var $operator_connector_small_arrow = $('<div class="flowchart-operator-connector-small-arrow"></div>');
+            $operator_connector_small_arrow.appendTo($operator_connector);
+
+            fullElement.connectors[connectorKey].push($operator_connector);
+            fullElement.connectorArrows[connectorKey].push($operator_connector_arrow);
+            fullElement.connectorSmallArrows[connectorKey].push($operator_connector_small_arrow);
         },
         
         getOperatorElement: function(operatorData) {
@@ -543,6 +610,10 @@ $(function() {
                         self._unsetTemporaryLink();
                         var operatorId = $(this).data('operator_id');
                         operatorChangedPosition(operatorId, ui.position);
+                        fullElement.operator.css({
+                          height: 'auto'
+                        });
+                        
                         self.options.onOperatorMoved(operatorId, ui.position);
                         self.options.onAfterChange('operator_moved');
                     },
@@ -552,13 +623,13 @@ $(function() {
             this.options.onAfterChange('operator_create');
         },
         
-        _connectorClicked: function(operator, connector, connectorCategory) {
+        _connectorClicked: function(operator, connector, subConnector, connectorCategory) {
             if (connectorCategory == 'outputs') {
                 var d = new Date();
                 var currentTime = d.getTime();
-                this.lastOutputConnectorClicked = {operator: operator, connector: connector};
+                this.lastOutputConnectorClicked = {operator: operator, connector: connector, subConnector: subConnector};
                 this.objs.layers.temporaryLink.show();
-                var position = this.getConnectorPosition(operator, connector);
+                var position = this.getConnectorPosition(operator, connector, subConnector);
                 var x = position.x + position.width;
                 var y = position.y;
                 this.objs.temporaryLink.setAttribute('x1', x);
@@ -569,8 +640,10 @@ $(function() {
                 var linkData = {
                     fromOperator: this.lastOutputConnectorClicked.operator,
                     fromConnector: this.lastOutputConnectorClicked.connector,
+                    fromSubConnector: this.lastOutputConnectorClicked.subConnector,
                     toOperator: operator,
-                    toConnector: connector
+                    toConnector: connector,
+                    toSubConnector: subConnector
                 };
                 
                 this.addLink(linkData);
@@ -730,10 +803,49 @@ $(function() {
                 }
             }
             this.colorizeLink(linkId, 'transparent');
-            this.data.links[linkId].internal.els.overallGroup.remove();
+            var linkData = this.data.links[linkId];
+            var fromOperator = linkData.fromOperator;
+            var fromConnector = linkData.fromConnector;
+            var toOperator = linkData.toOperator;
+            var toConnector = linkData.toConnector;
+            linkData.internal.els.overallGroup.remove();
             delete this.data.links[linkId];
           
+            this._cleanMultipleConnectors(fromOperator, fromConnector, 'from');
+            this._cleanMultipleConnectors(toOperator, toConnector, 'to');
+          
             this.options.onAfterChange('link_delete');
+        },
+      
+        _cleanMultipleConnectors: function(operator, connector, linkFromTo) {
+            if (!this.data.operators[operator].properties[linkFromTo == 'from' ? 'outputs':  'inputs'][connector].multiple) {
+                return;
+            }
+          
+            var maxI = -1;
+            var fromToOperator = linkFromTo + 'Operator';
+            var fromToConnector = linkFromTo + 'Connector';
+            var fromToSubConnector = linkFromTo + 'SubConnector';
+            var els = this.data.operators[operator].internal.els;
+            var subConnectors = els.connectors[connector];
+            var nbSubConnectors = subConnectors.length;
+          
+            for (var linkId in this.data.links) {
+                var linkData = this.data.links[linkId];
+                if (linkData[fromToOperator] == operator && linkData[fromToConnector] == connector) {
+                    if (maxI < linkData[fromToSubConnector]) {
+                        maxI = linkData[fromToSubConnector];
+                    }
+                }
+            }
+          
+            var nbToDelete = Math.min(nbSubConnectors - maxI - 2, nbSubConnectors - 1);
+            for (var i = 0; i < nbToDelete; i++) {
+                subConnectors[subConnectors.length - 1].remove();
+                subConnectors.pop();
+                els.connectorArrows[connector].pop();
+                els.connectorSmallArrows[connector].pop();
+            }
         },
         
         deleteSelected: function() {

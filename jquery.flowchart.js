@@ -210,16 +210,17 @@ $(function() {
             if (!multipleLinksOnOutput || !multipleLinksOnInput) {
                 for (var linkId2 in this.data.links) {
                     var currentLink = this.data.links[linkId2];
+                    var currentOperator = this.data.operators[currentLink.fromOperator];
                   
                     var currentSubConnectors = this._getSubConnectors(currentLink);
                     var currentFromSubConnector = currentSubConnectors[0];
                     var currentToSubConnector = currentSubConnectors[1];
                     
-                    if (!multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector && currentFromSubConnector == fromSubConnector) {
+                    if (!multipleLinksOnOutput && !currentOperator.properties.multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector && currentFromSubConnector == fromSubConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }
-                    if (!multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector && currentToSubConnector == toSubConnector) {
+                    if (!multipleLinksOnInput && !currentOperator.properties.multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector && currentToSubConnector == toSubConnector) {
                         this.deleteLink(linkId2);
                         continue;
                     }

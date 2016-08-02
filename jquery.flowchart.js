@@ -452,7 +452,7 @@ $(function() {
             $operator.addClass(infos.class);
             
             var $operator_title = $('<div class="flowchart-operator-title"></div>');
-            $operator_title.text(infos.title);
+            $operator_title.html(infos.title);
             $operator_title.appendTo($operator);
             
             var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
@@ -881,7 +881,7 @@ $(function() {
         },
         
         setOperatorTitle: function(operatorId, title) {
-            this.data.operators[operatorId].internal.els.title.text(title);
+            this.data.operators[operatorId].internal.els.title.html(title);
             if (typeof this.data.operators[operatorId].properties == 'undefined') {
                 this.data.operators[operatorId].properties = {};
             }

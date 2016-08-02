@@ -123,7 +123,7 @@
     box-sizing: border-box;
     border-bottom: 1px solid #DDDDDD;
     background: #F0F0F0;
-    height: 30px;
+    height: auto;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

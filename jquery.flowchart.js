@@ -881,7 +881,7 @@ $(function() {
         },
         
         setOperatorTitle: function(operatorId, title) {
-            this.data.operators[operatorId].internal.els.title.text(title);
+            this.data.operators[operatorId].internal.els.title.html(title);
             if (typeof this.data.operators[operatorId].properties == 'undefined') {
                 this.data.operators[operatorId].properties = {};
             }

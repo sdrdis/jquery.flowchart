@@ -26,7 +26,7 @@ Authors
 
 Contributors
 ------------
-* Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) for bug fixes and code formatting
+* Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) - for bug fixes and code formatting
 
 Documentation
 -------------

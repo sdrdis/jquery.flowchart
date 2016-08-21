@@ -580,8 +580,6 @@ $(function () {
                 this._addSelectedClass(operatorId);
             }
 
-            var operatorData = this.data.operators[operatorId];
-
             var self = this;
 
             function operatorChangedPosition(operator_id, pos) {

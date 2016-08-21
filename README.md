@@ -24,6 +24,10 @@ Authors
 -------
 * [Sebastien Drouyer](http://sebastien.drouyer.com) - alias [@sdrdis](https://twitter.com/sdrdis) - for this jquery ui plugin
 
+Contributors
+------------
+* Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) for bug fixes and code formatting
+
 Documentation
 -------------
 

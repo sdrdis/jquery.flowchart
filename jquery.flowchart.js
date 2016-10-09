@@ -180,6 +180,7 @@ $(function () {
                     this.createOperator(operatorId, data.operators[operatorId]);
                 }
             }
+            this.data.links = {};
             for (var linkId in data.links) {
                 if (data.links.hasOwnProperty(linkId)) {
                     this.createLink(linkId, data.links[linkId]);

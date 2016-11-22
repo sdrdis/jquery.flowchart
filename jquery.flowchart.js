@@ -605,6 +605,7 @@ $(function () {
                 var pointerX;
                 var pointerY;
                 fullElement.operator.draggable({
+                    containment: operatorData.free ? false : this.element,
                     handle: '.flowchart-operator-title',
                     start: function (e, ui) {
                         if (self.lastOutputConnectorClicked != null) {

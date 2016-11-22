@@ -567,8 +567,10 @@ $(function () {
 
             var grid = this.options.grid;
 
-            operatorData.top = Math.round(operatorData.top / grid) * grid;
-            operatorData.left = Math.round(operatorData.left / grid) * grid;
+            if (grid) {
+                operatorData.top = Math.round(operatorData.top / grid) * grid;
+                operatorData.left = Math.round(operatorData.left / grid) * grid;
+            }
 
             fullElement.operator.appendTo(this.objs.layers.operators);
             fullElement.operator.css({top: operatorData.top, left: operatorData.left});
@@ -614,13 +616,15 @@ $(function () {
                         pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'));
                     },
                     drag: function (e, ui) {
-                        var grid = self.options.grid;
-                        var elementOffset = self.element.offset();
-                        ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
-                        ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
-                        ui.offset.left = Math.round(ui.position.left + elementOffset.left);
-                        ui.offset.top = Math.round(ui.position.top + elementOffset.top);
-                        fullElement.operator.css({left: ui.position.left, top: ui.position.top});
+                        if (grid) {
+                            var grid = self.options.grid;
+                            var elementOffset = self.element.offset();
+                            ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
+                            ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
+                            ui.offset.left = Math.round(ui.position.left + elementOffset.left);
+                            ui.offset.top = Math.round(ui.position.top + elementOffset.top);
+                            fullElement.operator.css({left: ui.position.left, top: ui.position.top});
+                        }
                         operatorChangedPosition($(this).data('operator_id'), ui.position);
                     },
                     stop: function (e, ui) {

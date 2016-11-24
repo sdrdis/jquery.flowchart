@@ -14,7 +14,14 @@ Here are the main functionalities provided so far:
 * Methods are provided so that the end-user can edit the flow chart by adding / moving / removing operators, creating / removing connections between them.
 * The developper can save / load the flowchart.
 * Operators and links can be customized using CSS and the plugin parameters.
-* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#advanced)
+* Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#advanced).
+
+Context
+-------
+
+This project is part of a bigger one, [UltIDE](https://github.com/ultide/ultide) which allows you to have a complete interface managing a flowchart and custom properties. Though it is still WIP, you are welcome to give it a try and contribute. A screenshot is shown below.
+
+![UltIDE Screenshot](https://ultide.github.io/ultide-documentation/images/screenshot.png?version=2)
 
 License
 -------

@@ -617,7 +617,7 @@ $(function () {
                         pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'));
                     },
                     drag: function (e, ui) {
-                        if (grid) {
+                        if (self.options.grid) {
                             var grid = self.options.grid;
                             var elementOffset = self.element.offset();
                             ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;

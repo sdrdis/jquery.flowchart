@@ -28,6 +28,7 @@ Contributors
 ------------
 * Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) - for bug fixes and code formatting
 * Guijin Ding - alias [@dingguijin](https://github.com/dingguijin) - for bug fixes
+* Fatih Marabaoğlu - alias [@MonoLightTech](https://github.com/MFatihMAR) - for adding the uncontained parameter and improving the grid system.
 
 Documentation
 -------------
@@ -54,6 +55,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __type__: (optional) The type of the operator. See `data.operatorTypes`.
     * __properties:__
       * __title__
+      * __uncontained:__ (optional, default: `false`) If `true`, the operator can be moved outside the container.
       * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
       * __inputs:__ Hash defining the box's input connectors. The keys define the connectors ID and the values define each connector's information as follow:
         * __label__: Label of the connector. If the connector is __multiple__, '(:i)' is replaced by the subconnector ID.
@@ -81,7 +83,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 * __linkWidth (default: 11):__ Width of the links.
 
-* __grid (default: 20):__ Grid of the operators when moved.
+* __grid (default: 20):__ Grid of the operators when moved. If its value is set to 0, the grid is disabled.
 
 * __multipleLinksOnInput (default: false):__ Allows multiple links on the same input connector.
 

@@ -605,7 +605,7 @@ $(function () {
                 var pointerX;
                 var pointerY;
                 fullElement.operator.draggable({
-                    containment: operatorData.internal.properties.free ? false : this.element,
+                    containment: operatorData.internal.properties.uncontained ? false : this.element,
                     handle: '.flowchart-operator-title',
                     start: function (e, ui) {
                         if (self.lastOutputConnectorClicked != null) {
@@ -623,7 +623,7 @@ $(function () {
                             ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
                             ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
                             
-                            if (!operatorData.internal.properties.free) {
+                            if (!operatorData.internal.properties.uncontained) {
                                 var $this = $(this);
                                 ui.position.left = Math.min(Math.max(ui.position.left, 0), self.element.width() - $this.outerWidth());
                                 ui.position.top = Math.min(Math.max(ui.position.top, 0), self.element.height() - $this.outerHeight());
@@ -966,8 +966,7 @@ $(function () {
                     operatorProperties = operatorData.properties;
                 }
                 return $.extend({}, typeProperties, operatorProperties);
-            }
-            else {
+            } else {
                 return operatorData.properties;
             }
         },

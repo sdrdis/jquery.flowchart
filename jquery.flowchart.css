@@ -116,6 +116,10 @@
     border-color: #555;
 }
 
+.flowchart-operator.hover {
+    border-color: #F00;
+}
+
 .flowchart-operator .flowchart-operator-title {
     width: 100%;
     padding: 5px;

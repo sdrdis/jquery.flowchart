@@ -103,6 +103,11 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
 
 * __onOperatorUnselect (default: function returning true):__ Callback method. Called when an operator is unselected. It should return a boolean. Returning `false` cancels the unselection.
 
+* __onOperatorMouseOver (default: function returning true):__ Callback method. Called when the mouse pointer enters an operator. It should return a boolean. Returning `false` cancels the selection. Parameters are:
+  * __operatorId:__ ID of the operator.
+
+* __onOperatorMouseOut (default: function returning true):__ Callback method. Called when the mouse pointer leaves an operator. It should return a boolean. Returning `false` cancels the unselection.
+
 * __onLinkSelect (default: function returning true):__ Callback method. Called when a link is selected. It should return a boolean. Returning `false` cancels the selection. Parameters are:
   * __linkId:__ ID of the link.
 
@@ -169,6 +174,20 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __operatorId__
 
 * __unselectOperator():__
+
+* __addClassOperator(operatorId, className):__
+  * __Parameters:__
+    * __operatorId__
+    * __className__: Class name to add.
+
+* __removeClassOperator(operatorId, className):__
+  * __Parameters:__
+    * __operatorId__
+    * __className__: Class name to remove.
+
+* __removeClassOperators(className):__
+  * __Parameters:__
+    * __className__: Remove class name from all operators.
 
 * __setOperatorTitle(operatorId, title):__
   * __Parameters:__

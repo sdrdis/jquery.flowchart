@@ -22,6 +22,12 @@ $(function () {
             onOperatorUnselect: function () {
                 return true;
             },
+            onOperatorMouseOver: function (operatorId) {
+                return true;
+            },
+            onOperatorMouseOut: function (operatorId) {
+                return true;
+            },
             onLinkSelect: function (linkId) {
                 return true;
             },
@@ -164,6 +170,13 @@ $(function () {
                 self.selectLink($(this).data('link_id'));
             });
 
+            this.objs.layers.operators.on('mouseover', '.flowchart-operator', function (e) {
+                self._operatorMouseOver($(this).data('operator_id'));
+            });
+
+            this.objs.layers.operators.on('mouseout', '.flowchart-operator', function (e) {
+                self._operatorMouseOut($(this).data('operator_id'));
+            });
 
         },
 
@@ -737,6 +750,40 @@ $(function () {
             this._removeSelectedClassOperators();
             this._addSelectedClass(operatorId);
             this.selectedOperatorId = operatorId;
+        },
+
+        addClassOperator: function (operatorId, className) {
+            this.data.operators[operatorId].internal.els.operator.addClass(className);
+        },
+
+        removeClassOperator: function (operatorId, className) {
+            this.data.operators[operatorId].internal.els.operator.removeClass(className);
+        },
+
+        removeClassOperators: function (className) {
+            this.objs.layers.operators.find('.flowchart-operator').removeClass(className);
+        },
+
+        _addHoverClassOperator: function (operatorId) {
+            this.data.operators[operatorId].internal.els.operator.addClass('hover');
+        },
+
+        _removeHoverClassOperators: function () {
+            this.objs.layers.operators.find('.flowchart-operator').removeClass('hover');
+        },
+
+        _operatorMouseOver: function (operatorId) {
+            if (!this.options.onOperatorMouseOver(operatorId)) {
+                return;
+            }
+            this._addHoverClassOperator(operatorId);
+        },
+
+        _operatorMouseOut: function (operatorId) {
+            if (!this.options.onOperatorMouseOut(operatorId)) {
+                return;
+            }
+            this._removeHoverClassOperators();
         },
 
         getSelectedOperatorId: function () {

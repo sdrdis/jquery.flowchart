@@ -112,9 +112,15 @@
     pointer-events: initial;
 }
 
+.flowchart-operator.hover {
+    border-color: #999;
+}
+
 .flowchart-operator.selected {
     border-color: #555;
 }
+
+
 
 .flowchart-operator .flowchart-operator-title {
     width: 100%;

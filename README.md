@@ -200,6 +200,11 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __operatorId__
   * __Return:__ The operator's title.
 
+* __doesOperatorExists(operatorId):__
+  * __Description:__ This method checks whether or not an operator with id equal to `operatorId` exists.
+  * __Parameters:__
+    * __operatorId__
+
 * __setOperatorData(operatorId, operatorData):__
   * __Description:__ This method replaces the operator's data. Note that if new connectors are renamed / removed, the flowchart can remove links.
   * __Parameters:__

@@ -998,6 +998,10 @@ $(function () {
             this.redrawLinksLayer();
             this.options.onAfterChange('operator_data_change');
         },
+        
+        doesOperatorExists: function (operatorId) {
+            return typeof this.data.operators[operatorId] != 'undefined';
+        },
 
         getOperatorData: function (operatorId) {
             var data = $.extend(true, {}, this.data.operators[operatorId]);

@@ -137,7 +137,7 @@ $(function () {
             });
 
 
-            this.objs.layers.operators.on('mousedown touchstart', '.flowchart-operator', function (e) {
+            this.objs.layers.operators.on('pointerdown mousedown touchstart', '.flowchart-operator', function (e) {
                 e.stopImmediatePropagation();
             });
 

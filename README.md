@@ -35,7 +35,7 @@ Contributors
 ------------
 * Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) - for bug fixes and code formatting.
 * Guijin Ding - alias [@dingguijin](https://github.com/dingguijin) - for bug fixes.
-* Fatih Marabaoğlu - alias [@MonoLightTech](https://github.com/MFatihMAR) - for adding the uncontained parameter and improving the grid system.
+* Fatih Marabaoglu - alias [@MonoLightTech](https://github.com/MFatihMAR) - for adding the uncontained parameter and improving the grid system.
 * Peter Vavro - alias [@petervavro](https://github.com/petervavro) - for adding mouse events.
 * Mike Branham - alias [@Mike-Branham](https://github.com/Mike-Branham) - for bug fixes in the demo page.
 
@@ -79,6 +79,8 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __toConnector:__ ID of the connector the link goes to.
     * __toSubConnector:__ (optional) If it is a multiple connector, which subconnector is it.
     * __color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
+	
+  * __linkRestrictions:__ (optional, default: `[]`) If not empty, define which links are allowed. Same structure as `links`.
     
   * __operatorTypes:__ (optional) Hash allowing you to define common operator types in order to not repeat the properties key. Key define the operator's type ID and the value define the properties (same structure as `data.operators.properties`).
     

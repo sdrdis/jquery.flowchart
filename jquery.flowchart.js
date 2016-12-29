@@ -186,6 +186,11 @@ $(function () {
             if (typeof data.operatorTypes != 'undefined') {
                 this.data.operatorTypes = data.operatorTypes;
             }
+			
+			this.data.linkRestrictions = [];
+            if(typeof data.linkRestrictions != 'undefined' && data.linkRestrictions.length>0) {
+            	this.data.linkRestrictions = data.linkRestrictions;
+            }
 
             this.data.operators = {};
             for (var operatorId in data.operators) {
@@ -216,6 +221,11 @@ $(function () {
             if (!this.options.onLinkCreate(linkId, linkData)) {
                 return;
             }
+			
+			var restrictionLinkIndex = this._indexOfLinkGranted(linkData);
+            if(restrictionLinkIndex == -1) {
+            	return;
+            }
 
             var subConnectors = this._getSubConnectors(linkData);
             var fromSubConnector = subConnectors[0];
@@ -245,11 +255,43 @@ $(function () {
 
             this._autoCreateSubConnector(linkData.fromOperator, linkData.fromConnector, 'outputs', fromSubConnector);
             this._autoCreateSubConnector(linkData.toOperator, linkData.toConnector, 'inputs', toSubConnector);
+			
+			//try to colorize link with restriction link data
+            if(restrictionLinkIndex!=null) {
+            	var restriction = this.data.linkRestrictions[restrictionLinkIndex];
+            	if(typeof restriction.color != 'undefined') {
+            		linkData.color = restriction.color;
+            	}
+            }
 
             this.data.links[linkId] = linkData;
             this._drawLink(linkId);
 
             this.options.onAfterChange('link_create');
+        },
+		
+		/** Search into this.data.linkRestrictions if the given link is granted
+         * Return null if linkRestrictions is disabled (empty array)
+         * Return -1 if the link is forbidden, and the index into the link restriction array otherwise
+         */
+        _indexOfLinkGranted: function(linkData) {
+        	if(this.data.linkRestrictions.length == 0) {
+        		return null;
+        	}
+        	
+        	var linkRestrictions = this.data.linkRestrictions;
+        	
+        	for(var i=0; i<linkRestrictions.length; i++) {
+        		var restriction = linkRestrictions[i];
+        		if(restriction.fromOperator==linkData.fromOperator
+        				&& restriction.fromConnector==linkData.fromConnector
+        				&& restriction.toOperator==linkData.toOperator
+        				&& restriction.toConnector==linkData.toConnector) {
+        			return i;
+        		}
+        	}
+        	
+        	return -1;
         },
 
         _autoCreateSubConnector: function (operator, connector, connectorType, subConnector) {
@@ -672,7 +714,8 @@ $(function () {
                 this.lastOutputConnectorClicked = {
                     operator: operator,
                     connector: connector,
-                    subConnector: subConnector
+                    subConnector: subConnector,
+					grantedLinks: this._getGrantedLinks(operator, connector)
                 };
                 this.objs.layers.temporaryLink.show();
                 var position = this.getConnectorPosition(operator, connector, subConnector);
@@ -681,6 +724,7 @@ $(function () {
                 this.objs.temporaryLink.setAttribute('x1', x.toString());
                 this.objs.temporaryLink.setAttribute('y1', y.toString());
                 this._mousemove(x, y);
+				this._colorizeGrantedLinks();
             }
             if (connectorCategory == 'inputs' && this.lastOutputConnectorClicked != null) {
                 var linkData = {
@@ -691,13 +735,65 @@ $(function () {
                     toConnector: connector,
                     toSubConnector: subConnector
                 };
-
-                this.addLink(linkData);
+				
                 this._unsetTemporaryLink();
+                this.addLink(linkData);
             }
+        },
+		
+		_getGrantedLinks: function(operator, connector) {
+        	if(this.data.linkRestrictions.length == 0) {
+        		return [];
+        	}
+        	
+        	var grantedLinks = this.data.linkRestrictions.filter(function(r) {
+    			return operator==r.fromOperator && connector==r.fromConnector;
+    		});
+        	
+        	var that = this;
+        	
+        	return grantedLinks.map(function(l) {
+        		if(typeof l.color == 'undefined') {
+        			l.color = defaultLinkColor;
+        		}
+        			
+        		var toOperator = that.data.operators[l.toOperator];
+    			var smallArrows = toOperator.internal.els.connectorSmallArrows[l.toConnector];
+    			
+    			l.smallArrows = smallArrows.map(function(sa) {
+    				return {els: sa, oldColor: sa.css('border-left-color')};
+    			});
+    			
+    			return l;
+        	});
+        },
+        
+        _colorizeGrantedLinks: function() {
+        	if(this.lastOutputConnectorClicked != null) {
+        		var grantedLinks = this.lastOutputConnectorClicked.grantedLinks;
+        		
+        		grantedLinks.forEach(function(l) {
+	    			l.smallArrows.forEach(function(sa) {
+	    				sa.els.css('border-left-color', l.color);
+	    			});
+	    		});
+        	}
+        },
+        
+        _restoreGrantedLinksColor: function() {
+        	if(this.lastOutputConnectorClicked != null) {
+        		var grantedLinks = this.lastOutputConnectorClicked.grantedLinks;
+        		
+        		grantedLinks.forEach(function(l) {
+	    			l.smallArrows.forEach(function(sa) {
+	    				sa.els.css('border-left-color', sa.oldColor);
+	    			});
+	    		});
+        	}
         },
         
         _unsetTemporaryLink: function () {
+			this._restoreGrantedLinksColor();
             this.lastOutputConnectorClicked = null;
             this.objs.layers.temporaryLink.hide();
         },

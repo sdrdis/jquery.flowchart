@@ -265,9 +265,12 @@ $(function() {
         	
         	for(var i=0; i<linkRestrictions.length; i++) {
         		var restriction = linkRestrictions[i];
-        		if(restriction.fromOperator==linkData.fromOperator
+        		var fromOperatorType = this.data.operators[linkData.fromOperator].type;
+        		var toOperatorType = this.data.operators[linkData.toOperator].type;
+        		
+        		if(restriction.fromOperatorType==fromOperatorType
         				&& restriction.fromConnector==linkData.fromConnector
-        				&& restriction.toOperator==linkData.toOperator
+        				&& restriction.toOperatorType==toOperatorType
         				&& restriction.toConnector==linkData.toConnector) {
         			return i;
         		}
@@ -682,7 +685,7 @@ $(function() {
                 		operator: operator,
                 		connector: connector,
                 		subConnector: subConnector,
-                		grantedLinks: this._getGrantedLinks(operator, connector)
+                		grantedConnectors: this._getGrantedConnectors(operator, connector)
                 };
                 this.objs.layers.temporaryLink.show();
                 var position = this.getConnectorPosition(operator, connector, subConnector, connectorCategory);
@@ -691,7 +694,7 @@ $(function() {
                 this.objs.temporaryLink.setAttribute('x1', x);
                 this.objs.temporaryLink.setAttribute('y1', y);
                 this._mousemove(x, y);
-                this._colorizeGrantedLinks();
+                this._colorizeGrantedConnectors();
             }
             if (connectorCategory == 'inputs' && this.lastOutputConnectorClicked != null) {
                 var linkData = {
@@ -708,38 +711,49 @@ $(function() {
             }
         },
         
-        _getGrantedLinks: function(operator, connector) {
-        	if(this.data.linkRestrictions.length == 0) {
+        _getGrantedConnectors: function(operatorId, connector) {
+        	var operatorType = this.data.operators[operatorId].type;
+        	if(typeof operatorType=='undefined' || this.data.linkRestrictions.length==0) {
         		return [];
         	}
         	
         	var grantedLinks = this.data.linkRestrictions.filter(function(r) {
-    			return operator==r.fromOperator && connector==r.fromConnector;
+    			return operatorType==r.fromOperatorType && connector==r.fromConnector;
     		});
         	
-        	var that = this;
+        	var grantedConnectors = [];
         	
-        	return grantedLinks.map(function(l) {
-        		if(typeof l.color == 'undefined') {
-        			l.color = defaultLinkColor;
+        	for(var l in grantedLinks) {
+        		var link = grantedLinks[l];
+        		
+        		if(typeof link.color == 'undefined') {
+        			link.color = this.defaultLinkColor;
         		}
-        			
-        		var toOperator = that.data.operators[l.toOperator];
-    			var smallArrows = toOperator.internal.els.inputs.connectorSmallArrows[l.toConnector];
-    			
-    			l.smallArrows = smallArrows.map(function(sa) {
-    				return {els: sa, oldColor: sa.css('border-left-color')};
-    			});
-    			
-    			return l;
-        	});
+        		
+        		for(var opId in this.data.operators) {
+        			var operator = this.data.operators[opId];
+        			if(operator.type == link.toOperatorType) {
+        				var smallArrows = operator.internal.els.inputs.connectorSmallArrows[link.toConnector];
+        				smallArrows = smallArrows.map(function(sa) {
+        					return {els: sa, oldColor: sa.css('border-left-color')};
+        				});
+        				
+        				grantedConnectors.push({
+        					color: typeof link.color=='undefined' ? defaultLinkColor : link.color,
+        					smallArrows: smallArrows
+        				});
+        			}
+        		}
+        	}
+        	
+        	return grantedConnectors;
         },
         
-        _colorizeGrantedLinks: function() {
+        _colorizeGrantedConnectors: function() {
         	if(this.lastOutputConnectorClicked != null) {
-        		var grantedLinks = this.lastOutputConnectorClicked.grantedLinks;
+        		var grantedConnectors = this.lastOutputConnectorClicked.grantedConnectors;
         		
-        		grantedLinks.forEach(function(l) {
+        		grantedConnectors.forEach(function(l) {
 	    			l.smallArrows.forEach(function(sa) {
 	    				sa.els.css('border-left-color', l.color);
 	    			});
@@ -747,11 +761,11 @@ $(function() {
         	}
         },
         
-        _restoreGrantedLinksColor: function() {
+        _restoreGrantedConnectorsColor: function() {
         	if(this.lastOutputConnectorClicked != null) {
-        		var grantedLinks = this.lastOutputConnectorClicked.grantedLinks;
+        		var grantedConnectors = this.lastOutputConnectorClicked.grantedConnectors;
         		
-        		grantedLinks.forEach(function(l) {
+        		grantedConnectors.forEach(function(l) {
 	    			l.smallArrows.forEach(function(sa) {
 	    				sa.els.css('border-left-color', sa.oldColor);
 	    			});
@@ -760,7 +774,7 @@ $(function() {
         },
         
         _unsetTemporaryLink: function () {
-        	this._restoreGrantedLinksColor();
+        	this._restoreGrantedConnectorsColor();
         	this.lastOutputConnectorClicked = null;
             this.objs.layers.temporaryLink.hide();
         },

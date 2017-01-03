@@ -733,14 +733,14 @@ $(function() {
         		for(var opId in this.data.operators) {
         			var operator = this.data.operators[opId];
         			if(operator.type == link.toOperatorType) {
-        				var smallArrows = operator.internal.els.inputs.connectorSmallArrows[link.toConnector];
-        				smallArrows = smallArrows.map(function(sa) {
+        				var arrows = operator.internal.els.inputs.connectorArrows[link.toConnector];
+        				arrows = arrows.map(function(sa) {
         					return {els: sa, oldColor: sa.css('border-left-color')};
         				});
         				
         				grantedConnectors.push({
         					color: typeof link.color=='undefined' ? defaultLinkColor : link.color,
-        					smallArrows: smallArrows
+        					arrows: arrows
         				});
         			}
         		}
@@ -754,7 +754,7 @@ $(function() {
         		var grantedConnectors = this.lastOutputConnectorClicked.grantedConnectors;
         		
         		grantedConnectors.forEach(function(l) {
-	    			l.smallArrows.forEach(function(sa) {
+	    			l.arrows.forEach(function(sa) {
 	    				sa.els.css('border-left-color', l.color);
 	    			});
 	    		});
@@ -766,7 +766,7 @@ $(function() {
         		var grantedConnectors = this.lastOutputConnectorClicked.grantedConnectors;
         		
         		grantedConnectors.forEach(function(l) {
-	    			l.smallArrows.forEach(function(sa) {
+	    			l.arrows.forEach(function(sa) {
 	    				sa.els.css('border-left-color', sa.oldColor);
 	    			});
 	    		});

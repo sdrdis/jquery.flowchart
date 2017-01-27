@@ -679,6 +679,7 @@ $(function() {
         
         _connectorClicked: function(operator, connector, subConnector, connectorCategory) {
             if (connectorCategory == 'outputs') {
+            	this._restoreGrantedConnectorsColor();
                 var d = new Date();
                 var currentTime = d.getTime();
                 this.lastOutputConnectorClicked = {
@@ -726,10 +727,6 @@ $(function() {
         	for(var l in grantedLinks) {
         		var link = grantedLinks[l];
         		
-        		if(typeof link.color == 'undefined') {
-        			link.color = this.defaultLinkColor;
-        		}
-        		
         		for(var opId in this.data.operators) {
         			var operator = this.data.operators[opId];
         			if(operator.type == link.toOperatorType) {
@@ -739,7 +736,7 @@ $(function() {
         				});
         				
         				grantedConnectors.push({
-        					color: typeof link.color=='undefined' ? defaultLinkColor : link.color,
+        					color: typeof link.color=='undefined' ? this.options.defaultLinkColor : link.color,
         					arrows: arrows
         				});
         			}
@@ -990,10 +987,12 @@ $(function() {
         },
         
         getData: function() {
-            var keys = ['operators', 'links'];
+            var keys = ['operators', 'links', 'linkRestrictions'];
             var data = {};
             data.operators = $.extend(true, {}, this.data.operators);
             data.links = $.extend(true, {}, this.data.links);
+            data.linkRestrictions = $.extend(true, [], this.data.linkRestrictions);
+            
             for (var keyI in keys) {
                 var key = keys[keyI];
                 for (var objId in data[key]) {
@@ -1061,3 +1060,4 @@ $(function() {
         }
     });
 });
+//# sourceURL=jquery-flowchart.js

@@ -35,7 +35,7 @@ Contributors
 ------------
 * Simone Gasparini - alias [@simmyg89](https://github.com/simmyg89) - for bug fixes and code formatting.
 * Guijin Ding - alias [@dingguijin](https://github.com/dingguijin) - for bug fixes.
-* Fatih Marabaoglu - alias [@MonoLightTech](https://github.com/MFatihMAR) - for adding the uncontained parameter and improving the grid system.
+* Fatih Marabaoğlu - alias [@MonoLightTech](https://github.com/MFatihMAR) - for adding the uncontained parameter and improving the grid system.
 * Peter Vavro - alias [@petervavro](https://github.com/petervavro) - for adding mouse events.
 * Mike Branham - alias [@Mike-Branham](https://github.com/Mike-Branham) - for bug fixes in the demo page.
 

@@ -157,7 +157,7 @@ All callbacks (options with a name that begins with "on") have their event count
 `$(flowchartEl).on('operatorSelect', function(el, operatorId, returnHash) { /* your code here */ })`, where
 `flowchartEl` is the DOM element of the flowchart.
 
-If `onOperatorSelect` doesn't return `false`, the event `operatorSelect` is triggered, and the final value
+If `onOperatorSelect` doesn't return `false`, the event `operatorSelect` is triggered, and the final return value
 will be `returnHash['result']`. The behaviour is similar for all callbacks.
 
 ### Functions

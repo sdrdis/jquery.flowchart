@@ -213,7 +213,7 @@ $(function () {
 
         createLink: function (linkId, linkDataOriginal) {
             var linkData = $.extend(true, {}, linkDataOriginal);
-            if (!this.options.onLinkCreate(linkId, linkData)) {
+            if (!this.callbackEvent('linkCreate', [linkId, linkData])) {
                 return;
             }
 
@@ -249,7 +249,7 @@ $(function () {
             this.data.links[linkId] = linkData;
             this._drawLink(linkId);
 
-            this.options.onAfterChange('link_create');
+            this.callbackEvent('afterChange', ['link_create']);
         },
 
         _autoCreateSubConnector: function (operator, connector, connectorType, subConnector) {
@@ -306,7 +306,7 @@ $(function () {
 
         setLinkMainColor: function (linkId, color) {
             this.data.links[linkId].color = color;
-            this.options.onAfterChange('link_change_main_color');
+            this.callbackEvent('afterChange', ['link_change_main_color']);
         },
 
         _drawLink: function (linkId) {
@@ -574,7 +574,7 @@ $(function () {
             this._refreshInternalProperties(operatorData);
 
             var fullElement = this._getOperatorFullElement(operatorData);
-            if (!this.options.onOperatorCreate(operatorId, operatorData, fullElement)) {
+            if (!this.callbackEvent('operatorCreate', [operatorId, operatorData, fullElement])) {
                 return false;
             }
 
@@ -656,13 +656,13 @@ $(function () {
                             height: 'auto'
                         });
 
-                        self.options.onOperatorMoved(operatorId, ui.position);
-                        self.options.onAfterChange('operator_moved');
+                        self.callbackEvent('operatorMoved', [operatorId, ui.position]);
+                        self.callbackEvent('afterChange', ['operator_moved']);
                     }
                 });
             }
 
-            this.options.onAfterChange('operator_create');
+            this.callbackEvent('afterChange', ['operator_create']);
         },
 
         _connectorClicked: function (operator, connector, subConnector, connectorCategory) {
@@ -730,7 +730,7 @@ $(function () {
 
         unselectOperator: function () {
             if (this.selectedOperatorId != null) {
-                if (!this.options.onOperatorUnselect()) {
+                if (!this.callbackEvent('operatorUnselect', [])) {
                     return;
                 }
                 this._removeSelectedClassOperators();
@@ -741,9 +741,20 @@ $(function () {
         _addSelectedClass: function (operatorId) {
             this.data.operators[operatorId].internal.els.operator.addClass('selected');
         },
+        
+        callbackEvent: function(name, params) {
+            var cbName = 'on' + name.charAt(0).toUpperCase() + name.slice(1);
+            var ret = this.options[cbName].apply(this, params);
+            if (ret !== false) {
+                var returnHash = {'result': ret}
+                this.element.trigger(name, params.concat([returnHash]));
+                ret = returnHash['result'];
+            }
+            return ret;
+        },
 
         selectOperator: function (operatorId) {
-            if (!this.options.onOperatorSelect(operatorId)) {
+            if (!this.callbackEvent('operatorSelect', [operatorId])) {
                 return;
             }
             this.unselectLink();
@@ -773,14 +784,14 @@ $(function () {
         },
 
         _operatorMouseOver: function (operatorId) {
-            if (!this.options.onOperatorMouseOver(operatorId)) {
+            if (!this.callbackEvent('operatorMouseOver', [operatorId])) {
                 return;
             }
             this._addHoverClassOperator(operatorId);
         },
 
         _operatorMouseOut: function (operatorId) {
-            if (!this.options.onOperatorMouseOut(operatorId)) {
+            if (!this.callbackEvent('operatorMouseOut', [operatorId])) {
                 return;
             }
             this._removeHoverClassOperators();
@@ -826,7 +837,7 @@ $(function () {
 
         unselectLink: function () {
             if (this.selectedLinkId != null) {
-                if (!this.options.onLinkUnselect()) {
+                if (!this.callbackEvent('linkUnselect', [])) {
                     return;
                 }
                 this.uncolorizeLink(this.selectedLinkId, this.options.defaultSelectedLinkColor);
@@ -836,7 +847,7 @@ $(function () {
 
         selectLink: function (linkId) {
             this.unselectLink();
-            if (!this.options.onLinkSelect(linkId)) {
+            if (!this.callbackEvent('linkSelect', [linkId])) {
                 return;
             }
             this.unselectOperator();
@@ -849,7 +860,7 @@ $(function () {
         },
 
         _deleteOperator: function (operatorId, replace) {
-            if (!this.options.onOperatorDelete(operatorId, replace)) {
+            if (!this.callbackEvent('operatorDelete', [operatorId, replace])) {
                 return false;
             }
             if (!replace) {
@@ -868,7 +879,7 @@ $(function () {
             this.data.operators[operatorId].internal.els.operator.remove();
             delete this.data.operators[operatorId];
 
-            this.options.onAfterChange('operator_delete');
+            this.callbackEvent('afterChange', ['operator_delete']);
         },
 
         deleteLink: function (linkId) {
@@ -879,7 +890,7 @@ $(function () {
             if (this.selectedLinkId == linkId) {
                 this.unselectLink();
             }
-            if (!this.options.onLinkDelete(linkId, forced)) {
+            if (!this.callbackEvent('linkDelete', [linkId, forced])) {
                 if (!forced) {
                     return;
                 }
@@ -896,7 +907,7 @@ $(function () {
             this._cleanMultipleConnectors(fromOperator, fromConnector, 'from');
             this._cleanMultipleConnectors(toOperator, toConnector, 'to');
 
-            this.options.onAfterChange('link_delete');
+            this.callbackEvent('afterChange', ['link_delete']);
         },
 
         _cleanMultipleConnectors: function (operator, connector, linkFromTo) {
@@ -975,7 +986,7 @@ $(function () {
             }
             this.data.operators[operatorId].properties.title = title;
             this._refreshInternalProperties(this.data.operators[operatorId]);
-            this.options.onAfterChange('operator_title_change');
+            this.callbackEvent('afterChange', ['operator_title_change']);
         },
 
         getOperatorTitle: function (operatorId) {
@@ -996,7 +1007,7 @@ $(function () {
             this._deleteOperator(operatorId, true);
             this.createOperator(operatorId, operatorData);
             this.redrawLinksLayer();
-            this.options.onAfterChange('operator_data_change');
+            this.callbackEvent('afterChange', ['operator_data_change']);
         },
         
         doesOperatorExists: function (operatorId) {

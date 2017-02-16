@@ -754,14 +754,17 @@ $(function () {
                     var operator = this.data.operators[opId];
                     if(operator.type == link.toOperatorType) {
                         var arrows = operator.internal.els.inputs.connectorArrows[link.toConnector];
-                        arrows = arrows.map(function(sa) {
-                            return {els: sa, oldColor: sa.css('border-left-color')};
-                        });
+						
+						if(arrows!=undefined) {
+							arrows = arrows.map(function(sa) {
+								return {els: sa, oldColor: sa.css('border-left-color')};
+							});
 
-                        grantedConnectors.push({
-                            color: typeof link.color=='undefined' ? this.options.defaultLinkColor : link.color,
-                            arrows: arrows
-                        });
+							grantedConnectors.push({
+								color: typeof link.color=='undefined' ? this.options.defaultLinkColor : link.color,
+								arrows: arrows
+							});
+						}
                     }
                 }
             }

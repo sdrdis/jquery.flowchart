@@ -152,6 +152,15 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * operator_data_change
     * link_change_main_color
 
+### Events
+
+All callbacks (options with a name that begins with "on") have their event counterpart. For instance, the callback
+`onOperatorSelect(operatorId)` has an equivalent event that can be handled using
+`$(flowchartEl).on('operatorSelect', function(el, operatorId, returnHash) { /* your code here */ })`, where
+`flowchartEl` is the DOM element of the flowchart.
+
+If `onOperatorSelect` doesn't return `false`, the event `operatorSelect` is triggered, and the final return value
+will be `returnHash['result']`. The behaviour is similar for all callbacks.
 
 ### Functions
 #### Operators:

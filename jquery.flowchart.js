@@ -253,7 +253,7 @@ $(function () {
         },
 
         _autoCreateSubConnector: function (operator, connector, connectorType, subConnector) {
-            var connectorInfos = this.data.operators[operator].properties[connectorType][connector];
+            var connectorInfos = this.data.operators[operator].internal.properties[connectorType][connector];
             if (connectorInfos.multiple) {
                 var fromFullElement = this.data.operators[operator].internal.els;
                 var nbFromConnectors = this.data.operators[operator].internal.els.connectors[connector].length;

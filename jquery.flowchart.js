@@ -911,7 +911,7 @@ $(function () {
         },
 
         _cleanMultipleConnectors: function (operator, connector, linkFromTo) {
-            if (!this.data.operators[operator].properties[linkFromTo == 'from' ? 'outputs' : 'inputs'][connector].multiple) {
+            if (!this.data.operators[operator].internal.properties[linkFromTo == 'from' ? 'outputs' : 'inputs'][connector].multiple) {
                 return;
             }
 

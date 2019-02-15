@@ -1,4 +1,4 @@
-$(function () {
+jQuery(function ($) {
 // the widget definition, where "custom" is the namespace,
 // "colorize" the widget name
     $.widget("flowchart.flowchart", {

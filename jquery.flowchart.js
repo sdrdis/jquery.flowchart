@@ -901,7 +901,12 @@ $(function () {
             var fromConnector = linkData.fromConnector;
             var toOperator = linkData.toOperator;
             var toConnector = linkData.toConnector;
-            linkData.internal.els.overallGroup.remove();
+            var overallGroup = linkData.internal.els.overallGroup;
+            if (overallGroup.remove) {
+                overallGroup.remove();
+            } else {
+                overallGroup.parentNode.removeChild(overallGroup);
+            }
             delete this.data.links[linkId];
 
             this._cleanMultipleConnectors(fromOperator, fromConnector, 'from');

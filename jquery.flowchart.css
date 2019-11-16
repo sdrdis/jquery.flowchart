@@ -109,7 +109,7 @@
     width: 140px;
     border: 1px solid #CCCCCC;
     background: #FAFAFA;
-    pointer-events: initial;
+    pointer-events: auto;
 }
 
 .flowchart-operator.hover {

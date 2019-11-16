@@ -1043,6 +1043,36 @@ $(function () {
             return data;
         },
 
+        getLinksFrom: function(operatorId) {
+            var result = [];
+
+            for (var linkId in this.data.links) {
+                if (this.data.links.hasOwnProperty(linkId)) {
+                    var linkData = this.data.links[linkId];
+                    if (linkData.fromOperator === operatorId) {
+                        result.push(linkData);
+                    }
+                }
+            }
+
+            return result;
+        },
+
+        getLinksTo: function(operatorId) {
+            var result = [];
+
+            for (var linkId in this.data.links) {
+                if (this.data.links.hasOwnProperty(linkId)) {
+                    var linkData = this.data.links[linkId];
+                    if (linkData.toOperator === operatorId) {
+                        result.push(linkData);
+                    }
+                }
+            }
+
+            return result;
+        },
+
         getOperatorFullProperties: function (operatorData) {
             if (typeof operatorData.type != 'undefined') {
                 var typeProperties = this.data.operatorTypes[operatorData.type];

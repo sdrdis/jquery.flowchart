@@ -1,3 +1,13 @@
+if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function() {
+        if (this.parentNode) {
+            alert(this.innerHTML);
+            this.parentNode.removeChild(this);
+
+        }
+    };
+}
+
 $(function () {
 // the widget definition, where "custom" is the namespace,
 // "colorize" the widget name

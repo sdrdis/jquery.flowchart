@@ -263,6 +263,23 @@ $(function () {
             }
         },
 
+        _refreshOperatorConnectors: function (operatorId) {
+            for (var linkId in this.data.links) {
+                if (this.data.links.hasOwnProperty(linkId)) {
+                    var linkData = this.data.links[linkId];
+                    if (linkData.fromOperator == operatorId || linkData.toOperator == operatorId)
+                    {
+                        var subConnectors = this._getSubConnectors(linkData);
+                        var fromSubConnector = subConnectors[0];
+                        var toSubConnector = subConnectors[1];
+
+                        this._autoCreateSubConnector(linkData.fromOperator, linkData.fromConnector, 'outputs', fromSubConnector);
+                        this._autoCreateSubConnector(linkData.toOperator, linkData.toConnector, 'inputs', toSubConnector);
+                    }
+                }
+            }
+        },
+
         redrawLinksLayer: function () {
             this._clearLinksLayer();
             for (var linkId in this.data.links) {
@@ -1011,6 +1028,7 @@ $(function () {
             }
             this._deleteOperator(operatorId, true);
             this.createOperator(operatorId, operatorData);
+            this._refreshOperatorConnectors(operatorId);
             this.redrawLinksLayer();
             this.callbackEvent('afterChange', ['operator_data_change']);
         },

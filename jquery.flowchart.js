@@ -317,8 +317,8 @@ jQuery(function ($) {
             var elementOffset = this.element.offset();
 
             var x = (connectorOffset.left - elementOffset.left) / this.positionRatio;
-            var width = parseInt($connector.css('border-top-width'));
-            var y = (connectorOffset.top - elementOffset.top - 1) / this.positionRatio + parseInt($connector.css('border-left-width'));
+            var width = parseInt($connector.css('border-top-width'),10);
+            var y = (connectorOffset.top - elementOffset.top - 1) / this.positionRatio + parseInt($connector.css('border-left-width'),10);
 
             return {x: x, width: width, y: y};
         },
@@ -672,8 +672,8 @@ jQuery(function ($) {
                             return;
                         }
                         var elementOffset = self.element.offset();
-                        pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'));
-                        pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'));
+                        pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'),10);
+                        pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'),10);
                     },
                     drag: function (e, ui) {
                         if (self.options.grid) {
@@ -792,7 +792,7 @@ jQuery(function ($) {
             var cbName = 'on' + name.charAt(0).toUpperCase() + name.slice(1);
             var ret = this.options[cbName].apply(this, params);
             if (ret !== false) {
-                var returnHash = {'result': ret}
+                var returnHash = {'result': ret};
                 this.element.trigger(name, params.concat([returnHash]));
                 ret = returnHash['result'];
             }

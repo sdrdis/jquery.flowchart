@@ -242,6 +242,16 @@ will be `returnHash['result']`. The behaviour is similar for all callbacks.
     * __operatorData:__ The operator's data. Same as in `data.operators`.
   * __Return:__ The operator's DOM element (jquery). The element is not added in the container. It can be used to preview the operator or showing it during a drag and drop operation.
 
+* __getLinksFrom(operatorId):__
+  * __Parameters:__
+    * __operatorId:__ The operator's Id.
+  * __Return:__ Array with all links from the provided operator.
+
+* __getLinksTo(operatorId):__
+  * __Parameters:__
+    * __operatorId:__ The operator's Id.
+  * __Return:__ Array with all links to the provided operator.
+
 * __getOperatorFullProperties(operatorData):__
   * __Parameters:__
     * __operatorData:__ The operator's data. Same as in `data.operators`.

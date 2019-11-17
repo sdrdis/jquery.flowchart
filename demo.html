@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>flowchart example</title>
+  <link rel="stylesheet" href="jquery.flowchart.css">
+</head>
+<body>
+  <div id="example" class="content" style="width:100%; height: 100%;"></div>
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="jquery.flowchart.js"></script>
+  <script>
+   $(document).ready(function() {
+      var data = {
+        operators: {
+          operator1: {
+            top: 20,
+            left: 20,
+            properties: {
+              title: 'Operator 1',
+              inputs: {},
+              outputs: {
+                output_1: {
+                  label: 'Output 1'
+                }
+              }
+            }
+          },
+          operator2: {
+            top: 80,
+            left: 300,
+            properties: {
+              title: 'Operator 2',
+              inputs: {
+                input_1: {
+                  label: 'Input 1'
+                },
+                input_2: {
+                  label: 'Input 2'
+                },
+              },
+              outputs: {}
+            }
+          },
+        },
+        links: {
+          link_1: {
+            fromOperator: 'operator1',
+            fromConnector: 'output_1',
+            toOperator: 'operator2',
+            toConnector: 'input_2'
+          }
+        }
+      };
+
+      // Apply the plugin on a standard, empty div...
+      $('#example').css('height', window.innerHeight - 20).css('width', window.innerWidth - 20).flowchart({data : data});
+    });
+  </script>
+</body>
+</html>

@@ -30,7 +30,8 @@ This project repository is the latest version os jquery.flowchart with improveme
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Changed demo page to @lflfm sample page (more detailed demo);
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Removed lint warnings from parseInt and missing semicolons;
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes;
-* [@neoera](https://github.com/neoera/jquery.flowchart) - Multiple sub connector with array support.
+* [@neoera](https://github.com/neoera/jquery.flowchart) - Multiple sub connector with array support;
+* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to vertical flowcharts links.
 
 Context
 -------
@@ -97,7 +98,9 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __color:__ Color of the link. If undefined, default value is the same as `defaultLinkColor`.
     
   * __operatorTypes:__ (optional) Hash allowing you to define common operator types in order to not repeat the properties key. Key define the operator's type ID and the value define the properties (same structure as `data.operators.properties`).
-    
+
+* __verticalConnection (default: false):__ Allows to build vertical-connected flowcharts.
+
 * __distanceFromArrow (default: 3):__ Distance between the output connector and the link.
 
 * __defaultLinkColor (default: '#3366ff'):__ Default color of links.

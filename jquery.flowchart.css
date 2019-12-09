@@ -1,4 +1,6 @@
-
+/*
+ * jquery.flowchart - CSS definitions
+ */
 
 .flowchart-container {
     position: relative;
@@ -21,12 +23,9 @@
     display: none;
 }
 
-
-
 .flowchart-link, .flowchart-operator {
     cursor: default;
 }
-
 
 .flowchart-operator-connector {
     position: relative;
@@ -146,4 +145,60 @@
 .flowchart-operator .flowchart-operator-inputs, .flowchart-default-operator .flowchart-operator-outputs {
     display: table-cell;
     width: 50%;
+}
+
+/*
+ * flowchart-vertical
+ */
+
+.flowchart-vertical .flowchart-operator-inputs,
+.flowchart-vertical .flowchart-operator-outputs {
+    position: relative;
+    text-align: center;
+    display: table;
+    width: 100%;
+}
+.flowchart-vertical .flowchart-operator-connector-set {
+    display: table-cell;
+}
+.flowchart-vertical .flowchart-operator-connector {
+    position: relative;
+}
+.flowchart-vertical .flowchart-operator-connector-label {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+.flowchart-vertical .flowchart-operator-inputs .flowchart-operator-connector-label {
+    margin-left: auto;
+}
+.flowchart-vertical .flowchart-operator-connector-arrow {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ccc;
+    left: calc(50% - 10px);
+}
+.flowchart-vertical .flowchart-operator-connector:hover .flowchart-operator-connector-arrow {
+    border-left-color: transparent;
+    border-top-color: #999;
+}
+.flowchart-vertical .flowchart-operator-connector-small-arrow {
+    border-right: 5px solid transparent;
+    top: 2px;
+    left: calc(50% - 5px);
+}
+.flowchart-vertical .flowchart-operator-connector-arrow {
+    top: 0px;
+}
+.flowchart-vertical .flowchart-operator-outputs .flowchart-operator-connector-arrow {
+    bottom: -20px;
+    top: auto;
+}
+.flowchart-vertical .flowchart-operator-outputs .flowchart-operator-connector-small-arrow {
+    left: calc(50% - 5px);
+    bottom: -12px;
+    top: auto;
+}
+.flowchart-vertical .flowchart-link rect {
+    display: none;
 }

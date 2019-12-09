@@ -523,6 +523,12 @@ jQuery(function ($) {
             $operator_title.html(infos.title);
             $operator_title.appendTo($operator);
 
+            var $operator_body = $('<div class="flowchart-operator-body"></div>');
+            $operator_body.html(infos.body);
+            if (infos.body) {
+                $operator_body.appendTo($operator);
+            }
+
             var $operator_inputs_outputs = $('<div class="flowchart-operator-inputs-outputs"></div>');
 
             var $operator_inputs = $('<div class="flowchart-operator-inputs"></div>');
@@ -548,6 +554,7 @@ jQuery(function ($) {
             var fullElement = {
                 operator: $operator,
                 title: $operator_title,
+                body: $operator_body,
                 connectorSets: connectorSets,
                 connectors: connectors,
                 connectorArrows: connectorArrows,
@@ -678,7 +685,7 @@ jQuery(function ($) {
                 var pointerY;
                 fullElement.operator.draggable({
                     containment: operatorData.internal.properties.uncontained ? false : this.element,
-                    handle: '.flowchart-operator-title',
+                    handle: '.flowchart-operator-title, .flowchart-operator-body',
                     start: function (e, ui) {
                         if (self.lastOutputConnectorClicked != null) {
                             e.preventDefault();
@@ -1062,8 +1069,22 @@ jQuery(function ($) {
             this.callbackEvent('afterChange', ['operator_title_change']);
         },
 
+        setOperatorBody: function (operatorId, body) {
+            this.data.operators[operatorId].internal.els.body.html(body);
+            if (typeof this.data.operators[operatorId].properties == 'undefined') {
+                this.data.operators[operatorId].properties = {};
+            }
+            this.data.operators[operatorId].properties.body = body;
+            this._refreshInternalProperties(this.data.operators[operatorId]);
+            this.options.onAfterChange('operator_body_change');
+        },
+
         getOperatorTitle: function (operatorId) {
             return this.data.operators[operatorId].internal.properties.title;
+        },
+
+        getOperatorBody: function (operatorId) {
+            return this.data.operators[operatorId].internal.properties.body;
         },
 
         setOperatorData: function (operatorId, operatorData) {

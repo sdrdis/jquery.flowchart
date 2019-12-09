@@ -31,7 +31,8 @@ This project repository is the latest version os jquery.flowchart with improveme
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Removed lint warnings from parseInt and missing semicolons;
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes;
 * [@neoera](https://github.com/neoera/jquery.flowchart) - Multiple sub connector with array support;
-* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to vertical flowcharts links.
+* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to vertical flowcharts links;
+* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to HTML body into operators.
 
 Context
 -------
@@ -81,6 +82,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * __type__: (optional) The type of the operator. See `data.operatorTypes`.
     * __properties:__
       * __title__
+      * __body__
       * __uncontained:__ (optional, default: `false`) If `true`, the operator can be moved outside the container.
       * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
       * __inputs:__ Hash defining the box's input connectors. The keys define the connectors ID and the values define each connector's information as follow:
@@ -166,6 +168,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     * link_delete
     * operator_moved
     * operator_title_change
+    * operator_body_change
     * operator_data_change
     * link_change_main_color
 
@@ -224,10 +227,20 @@ will be `returnHash['result']`. The behaviour is similar for all callbacks.
     * __operatorId__
     * __title:__ The operator's new title to be set.
 
+* __setOperatorBody(operatorId, body):__
+  * __Parameters:__
+    * __operatorId__
+    * __body:__ The operator's new body html to be set.
+
 * __getOperatorTitle(operatorId):__
   * __Parameters:__
     * __operatorId__
   * __Return:__ The operator's title.
+
+* __getOperatorBody(operatorId):__
+  * __Parameters:__
+    * __operatorId__
+  * __Return:__ The operator's body.
 
 * __doesOperatorExists(operatorId):__
   * __Description:__ This method checks whether or not an operator with id equal to `operatorId` exists.

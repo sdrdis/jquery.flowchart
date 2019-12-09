@@ -16,6 +16,21 @@ Here are the main functionalities provided so far:
 * Operators and links can be customized using CSS and the plugin parameters.
 * Some methods allow you to add advanced functionalities, such as a panzoom view or adding operators using drag and drop. Take a look at the [advanced demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#advanced).
 
+Implementations
+---------------
+
+This project repository is the latest version os jquery.flowchart with improvements made by community users. The implementations made are:
+* [@zhangbg](https://github.com/zhangbg/jquery.flowchart) - Fixed compatibility in IE9 & IE10;
+* [@zhangbg](https://github.com/zhangbg/jquery.flowchart) - Fixed compatibility in IE11;
+* [@Elvaron](https://github.com/elvaron/jquery.flowchart) - Fixed setOperatorData on operators with ins/outs set to multiple:true;
+* [@Elvaron](https://github.com/elvaron/jquery.flowchart) - Added getLinksFrom(operator) and getLinksTo(operator) methods;
+* [@ziyiwang](https://github.com/ziyiwang/jquery.flowchart) - Add remove to IE, as IE does not support remove function;
+* [@dogbull](https://github.com/dogbull/jquery.flowchart) - Added getDataRef() method;
+* [@yaroslav-zenin](https://github.com/yaroslav-zenin/jquery.flowchart) - Switch to use global jQuery scope ("$" conflict with prototype library);
+* [@lflfm](https://github.com/lflfm/jquery.flowchart) - Changed demo page to @lflfm sample page (more detailed demo);
+* [@lflfm](https://github.com/lflfm/jquery.flowchart) - Removed lint warnings from parseInt and missing semicolons;
+* [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes.
+
 Context
 -------
 

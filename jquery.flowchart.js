@@ -538,7 +538,13 @@ jQuery(function ($) {
                 connectors[connectorKey] = [];
                 connectorSets[connectorKey] = $operator_connector_set;
 
-                self._createSubConnector(connectorKey, connectorInfos, fullElement);
+                if ($.isArray(connectorInfos.label)) {
+                    for (var i = 0; i < connectorInfos.label.length; i++) {
+                        self._createSubConnector(connectorKey, connectorInfos.label[i], fullElement);
+                    }
+                } else {
+                    self._createSubConnector(connectorKey, connectorInfos, fullElement);
+                }
             }
 
             for (var key_i in infos.inputs) {

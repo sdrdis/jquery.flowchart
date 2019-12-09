@@ -29,7 +29,8 @@ This project repository is the latest version os jquery.flowchart with improveme
 * [@yaroslav-zenin](https://github.com/yaroslav-zenin/jquery.flowchart) - Switch to use global jQuery scope ("$" conflict with prototype library);
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Changed demo page to @lflfm sample page (more detailed demo);
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Removed lint warnings from parseInt and missing semicolons;
-* [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes.
+* [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes;
+* [@neoera](https://github.com/neoera/jquery.flowchart) - Multiple sub connector with array support.
 
 Context
 -------

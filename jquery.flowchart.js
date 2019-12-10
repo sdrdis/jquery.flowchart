@@ -1076,7 +1076,7 @@ jQuery(function ($) {
             }
             this.data.operators[operatorId].properties.body = body;
             this._refreshInternalProperties(this.data.operators[operatorId]);
-            this.options.onAfterChange('operator_body_change');
+            this.callbackEvent('afterChange', ['operator_body_change']);
         },
 
         getOperatorTitle: function (operatorId) {

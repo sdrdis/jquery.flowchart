@@ -103,7 +103,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
     
   * __operatorTypes:__ (optional) Hash allowing you to define common operator types in order to not repeat the properties key. Key define the operator's type ID and the value define the properties (same structure as `data.operators.properties`).
 
-* __verticalConnection (default: false):__ Allows to build vertical-connected flowcharts.
+* __verticalConnection (default: false):__ Allows to build vertical-connected flowcharts. __WARNING:__ When using vertical connectors, avoid using multiple connectors, because it will break layout.
 
 * __distanceFromArrow (default: 3):__ Distance between the output connector and the link.
 

@@ -464,8 +464,8 @@ jQuery(function ($) {
             if (this.options.verticalConnection) {
                 fromY = fromY - 10;
                 toY = toY - 10;
-                bezierFromX = (fromX + offsetFromX + distanceFromArrow + 3);
-                bezierToX = (toX + offsetFromX + distanceFromArrow + 3);
+                bezierFromX = (fromX + offsetFromX + distanceFromArrow - 3);
+                bezierToX = (toX + offsetFromX + distanceFromArrow - 3);
 
                 bezierIntensity = Math.min(100, Math.max(Math.abs(bezierFromX - bezierToX) / 2, Math.abs(fromY - toY)));
                 linkData.internal.els.path.setAttribute("d", 'M' + bezierFromX + ',' + (fromY) + ' C' + bezierFromX + ',' + (fromY + bezierIntensity) + ' ' + bezierToX + ',' + (toY - bezierIntensity) + ' ' + bezierToX + ',' + toY);

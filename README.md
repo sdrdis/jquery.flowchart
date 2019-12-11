@@ -32,7 +32,8 @@ This project repository is the latest version os jquery.flowchart with improveme
 * [@lflfm](https://github.com/lflfm/jquery.flowchart) - Fixes the problem with connectors when using operatorTypes;
 * [@neoera](https://github.com/neoera/jquery.flowchart) - Multiple sub connector with array support;
 * [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to vertical flowcharts links;
-* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to HTML body into operators.
+* [@dshemendiuk](https://github.com/dshemendiuk/jquery.flowchart) - Support to HTML body into operators;
+* [@ernaniaz](https://github.com/ernaniaz/jquery.flowchart) - Support for multiple input/output connector link per operator.
 
 Context
 -------
@@ -87,6 +88,7 @@ http://sebastien.drouyer.com/jquery.flowchart-demo/
       * __class:__ css classes added to the operator DOM object. If undefined, default value is the same as `defaultOperatorClass`.
       * __inputs:__ Hash defining the box's input connectors. The keys define the connectors ID and the values define each connector's information as follow:
         * __label__: Label of the connector. If the connector is __multiple__, '(:i)' is replaced by the subconnector ID.
+        * __multipleLinks__: (optional) If `true`, allow multiple links to this connector.
         * __multiple__: (optional) If `true`, whenever a link is created on the connector, another connector (called subconnector) is created. See the [multiple connectors demo](http://sebastien.drouyer.com/jquery.flowchart-demo/#multiple).
       * __outputs:__ Hash defining the box's output connectors. Same structure as `inputs`.
       

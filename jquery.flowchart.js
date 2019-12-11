@@ -248,11 +248,11 @@ jQuery(function ($) {
                         var currentFromSubConnector = currentSubConnectors[0];
                         var currentToSubConnector = currentSubConnectors[1];
 
-                        if (!multipleLinksOnOutput && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector && currentFromSubConnector == fromSubConnector) {
+                        if (!multipleLinksOnOutput && !this.data.operators[linkData.fromOperator].properties.outputs[linkData.fromConnector].multipleLinks && currentLink.fromOperator == linkData.fromOperator && currentLink.fromConnector == linkData.fromConnector && currentFromSubConnector == fromSubConnector) {
                             this.deleteLink(linkId2);
                             continue;
                         }
-                        if (!multipleLinksOnInput && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector && currentToSubConnector == toSubConnector) {
+                        if (!multipleLinksOnInput && !this.data.operators[linkData.toOperator].properties.inputs[linkData.toConnector].multipleLinks && currentLink.toOperator == linkData.toOperator && currentLink.toConnector == linkData.toConnector && currentToSubConnector == toSubConnector) {
                             this.deleteLink(linkId2);
                         }
                     }

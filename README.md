@@ -346,9 +346,13 @@ will be `returnHash['result']`. The behaviour is similar for all callbacks.
 #### Misc:
 * __getData():__
   * __Return:__ The flow chart's data. Same structure as the `data` option.
+
 * __setData(data):__
   * __Parameters:__
     * __data:__ Same structure as the `data` option.
+
+* __getDataRef():__
+  * __Return:__ The internal system flow chart's data.
 
 * __setPositionRatio(positionRatio):__
   * __Parameters:__

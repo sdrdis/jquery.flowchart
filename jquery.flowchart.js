@@ -26,8 +26,7 @@ jQuery(function ($) {
             multipleLinksOnOutput: false,
             multipleLinksOnInput: false,
             linkVerticalDecal: 0,
-            verticalConnection: 0,
-            linkCurveYMargin: 100,
+            verticalConnection: false,
             onOperatorSelect: function (operatorId) {
                 return true;
             },
@@ -89,7 +88,7 @@ jQuery(function ($) {
             this.element.addClass('flowchart-container');
 
             if (this.options.verticalConnection) {
-                $('body').addClass('flowchart-vertical');
+                this.element.addClass('flowchart-vertical');
             }
 
             this.objs.layers.links = $('<svg class="flowchart-links-layer"></svg>');
@@ -326,8 +325,8 @@ jQuery(function ($) {
             var elementOffset = this.element.offset();
 
             var x = (connectorOffset.left - elementOffset.left) / this.positionRatio;
-            var width = parseInt($connector.css('border-top-width'),10);
-            var y = (connectorOffset.top - elementOffset.top - 1) / this.positionRatio + parseInt($connector.css('border-left-width'),10);
+            var width = parseInt($connector.css('border-top-width'), 10);
+            var y = (connectorOffset.top - elementOffset.top - 1) / this.positionRatio + parseInt($connector.css('border-left-width'), 10);
 
             return {x: x, width: width, y: y};
         },
@@ -692,8 +691,8 @@ jQuery(function ($) {
                             return;
                         }
                         var elementOffset = self.element.offset();
-                        pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'),10);
-                        pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'),10);
+                        pointerX = (e.pageX - elementOffset.left) / self.positionRatio - parseInt($(e.target).css('left'), 10);
+                        pointerY = (e.pageY - elementOffset.top) / self.positionRatio - parseInt($(e.target).css('top'), 10);
                     },
                     drag: function (e, ui) {
                         if (self.options.grid) {

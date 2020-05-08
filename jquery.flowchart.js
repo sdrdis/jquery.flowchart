@@ -1103,6 +1103,22 @@ jQuery(function ($) {
             this.redrawLinksLayer();
             this.callbackEvent('afterChange', ['operator_data_change']);
         },
+
+        getBoundingOperatorRect: function (operatorId) {
+            if (!this.data.operators[operatorId]) {
+                return null;
+            }
+
+            var elOperator = this.data.operators[operatorId].internal.els.operator;
+            var operator = this.data.operators[operatorId];
+
+            return {
+                'left': operator.left,
+                'top': operator.top,
+                'width': elOperator.width(),
+                'height': elOperator.height(),
+            };
+        },
         
         doesOperatorExists: function (operatorId) {
             return typeof this.data.operators[operatorId] != 'undefined';

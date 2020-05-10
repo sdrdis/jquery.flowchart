@@ -1137,6 +1137,7 @@ jQuery(function ($) {
                 if (this.data.links.hasOwnProperty(linkId)) {
                     var linkData = this.data.links[linkId];
                     if (linkData.fromOperator === operatorId) {
+                        linkData.linkId = linkId;
                         result.push(linkData);
                     }
                 }
@@ -1152,6 +1153,7 @@ jQuery(function ($) {
                 if (this.data.links.hasOwnProperty(linkId)) {
                     var linkData = this.data.links[linkId];
                     if (linkData.toOperator === operatorId) {
+                        linkData.linkId = linkId;
                         result.push(linkData);
                     }
                 }

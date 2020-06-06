@@ -8,6 +8,8 @@ if (!('remove' in Element.prototype)) {
     };
 }
 
+var operatorClickTimeout, operatorClicks = 0;
+
 jQuery(function ($) {
 // the widget definition, where "custom" is the namespace,
 // "colorize" the widget name
@@ -28,6 +30,9 @@ jQuery(function ($) {
             linkVerticalDecal: 0,
             verticalConnection: false,
             onOperatorSelect: function (operatorId) {
+                return true;
+            },
+            onOperatorDoubleClick: function (operatorId) {
                 return true;
             },
             onOperatorUnselect: function () {
@@ -819,7 +824,33 @@ jQuery(function ($) {
         },
 
         selectOperator: function (operatorId) {
+            var self = this;
+            operatorClicks++;
+            
+            if (operatorClicks == 1) { 
+                operatorClickTimeout = setTimeout(function () {
+                    self._singleClickOperator(operatorId);
+                    operatorClicks = 0;
+                }, 250);
+            } else {
+                clearTimeout(operatorClickTimeout);
+                this._doubleClickOperator(operatorId);
+                operatorClicks = 0;
+            }
+        },
+        
+        _singleClickOperator: function (operatorId) {
             if (!this.callbackEvent('operatorSelect', [operatorId])) {
+                return;
+            }
+            this.unselectLink();
+            this._removeSelectedClassOperators();
+            this._addSelectedClass(operatorId);
+            this.selectedOperatorId = operatorId;
+        },
+
+        _doubleClickOperator: function (operatorId) {
+            if (!this.callbackEvent('operatorDoubleClick', [operatorId])) {
                 return;
             }
             this.unselectLink();

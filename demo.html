@@ -119,9 +119,16 @@
 			$flowchart.flowchart({
 				onOperatorSelect: function(operatorId) {
 					$operatorProperties.show();
-					$operatorTitle.val($flowchart.flowchart('getOperatorTitle', operatorId));
+					$operatorTitle.val($flowchart.flowchart('getOperatorTitle', operatorId) + " - single click");
 					return true;
 				},
+				
+				onOperatorDoubleClick: function(operatorId) {
+					$operatorProperties.show();
+					$operatorTitle.val($flowchart.flowchart('getOperatorTitle', operatorId) + " - double click");
+					return true;
+				},
+				
 				onOperatorUnselect: function() {
 					$operatorProperties.hide();
 					return true;

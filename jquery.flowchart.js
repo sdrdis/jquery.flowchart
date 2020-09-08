@@ -23,6 +23,7 @@ jQuery(function ($) {
             defaultSelectedLinkColor: 'black',
             linkWidth: 10,
             grid: 20,
+            useStringForID: false,
             multipleLinksOnOutput: false,
             multipleLinksOnInput: false,
             linkVerticalDecal: 0,
@@ -218,10 +219,15 @@ jQuery(function ($) {
         },
 
         addLink: function (linkData) {
-            while (typeof this.data.links[this.linkNum] != 'undefined') {
-                this.linkNum++;
-            }
 
+            let useStringForID = this.options.useStringForID;
+            if(useStringForID){
+                this.linkNum = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+            }else{
+                while (typeof this.data.links[this.linkNum] != 'undefined') {
+                    this.linkNum++;
+                }
+            }
             this.createLink(this.linkNum, linkData);
             return this.linkNum;
         },
@@ -666,7 +672,7 @@ jQuery(function ($) {
             function operatorChangedPosition(operator_id, pos) {
                 operatorData.top = pos.top;
                 operatorData.left = pos.left;
-                
+
                 for (var linkId in self.data.links) {
                     if (self.data.links.hasOwnProperty(linkId)) {
                         var linkData = self.data.links[linkId];
@@ -700,13 +706,13 @@ jQuery(function ($) {
                             var elementOffset = self.element.offset();
                             ui.position.left = Math.round(((e.pageX - elementOffset.left) / self.positionRatio - pointerX) / grid) * grid;
                             ui.position.top = Math.round(((e.pageY - elementOffset.top) / self.positionRatio - pointerY) / grid) * grid;
-                            
+
                             if (!operatorData.internal.properties.uncontained) {
                                 var $this = $(this);
                                 ui.position.left = Math.min(Math.max(ui.position.left, 0), self.element.width() - $this.outerWidth());
                                 ui.position.top = Math.min(Math.max(ui.position.top, 0), self.element.height() - $this.outerHeight());
                             }
-                            
+
                             ui.offset.left = Math.round(ui.position.left + elementOffset.left);
                             ui.offset.top = Math.round(ui.position.top + elementOffset.top);
                             fullElement.operator.css({left: ui.position.left, top: ui.position.top});
@@ -757,11 +763,12 @@ jQuery(function ($) {
                     toSubConnector: subConnector
                 };
 
+
                 this.addLink(linkData);
                 this._unsetTemporaryLink();
             }
         },
-        
+
         _unsetTemporaryLink: function () {
             this.lastOutputConnectorClicked = null;
             this.objs.layers.temporaryLink.hide();
@@ -806,7 +813,7 @@ jQuery(function ($) {
         _addSelectedClass: function (operatorId) {
             this.data.operators[operatorId].internal.els.operator.addClass('selected');
         },
-        
+
         callbackEvent: function(name, params) {
             var cbName = 'on' + name.charAt(0).toUpperCase() + name.slice(1);
             var ret = this.options[cbName].apply(this, params);
@@ -1104,22 +1111,6 @@ jQuery(function ($) {
             this.callbackEvent('afterChange', ['operator_data_change']);
         },
 
-        getBoundingOperatorRect: function (operatorId) {
-            if (!this.data.operators[operatorId]) {
-                return null;
-            }
-
-            var elOperator = this.data.operators[operatorId].internal.els.operator;
-            var operator = this.data.operators[operatorId];
-
-            return {
-                'left': operator.left,
-                'top': operator.top,
-                'width': elOperator.width(),
-                'height': elOperator.height(),
-            };
-        },
-        
         doesOperatorExists: function (operatorId) {
             return typeof this.data.operators[operatorId] != 'undefined';
         },
